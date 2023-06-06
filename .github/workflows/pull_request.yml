@@ -26,7 +26,7 @@ jobs:
           arguments: build
       
       - name: Build Docker Image
-        run: docker build -t myapp:${{ github.sha }} .
+        run: docker build -f src/main/docker/Dockerfile.jvm -t myapp:${{ github.sha }} .
 
       - name: Install Trivy
         run: |
