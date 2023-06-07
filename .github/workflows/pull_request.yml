@@ -53,17 +53,8 @@ jobs:
         id: upload_comment
 
       - name: Create Comment on Pull Request
-        uses: actions/github-script@v4
+        uses: machine-learning-apps/github-comment@v1
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const commentPath = ${{ steps.upload_comment.outputs.comment_path }};
-            const comment = fs.readFileSync(commentPath, 'utf8');
-            github.rest.pulls.createReview({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number,
-              body: comment,
-              event: 'COMMENT'
-            });
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-file: comment.md
+          token: ${{ secrets.GITHUB_TOKEN }}
