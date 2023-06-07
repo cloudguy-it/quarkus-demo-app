@@ -47,18 +47,25 @@ jobs:
         run: trivy image myapp:${{ github.sha }} --format json > trivy_report.json
 
       - name: Upload Trivy Report as Comment
+        run: |
+          report=$(cat trivy_report.json)
+          echo "### Trivy Vulnerability Report\n\n$report" > comment.md
+          echo "::set-output name=comment_path::comment.md"
+        id: upload_comment
+
+      - name: Create Comment on Pull Request
         uses: actions/github-script@v4
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            const fs = require('fs');
-            const reportPath = './trivy_report.json';
-            const report = fs.readFileSync(reportPath, 'utf8');
+            const { context, github } = require('@actions/github');
+            const commentPath = ${{ steps.upload_comment.outputs.comment_path }};
+            const comment = fs.readFileSync(commentPath, 'utf8');
             const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
-            octokit.pulls.createReview({
+            octokit.rest.pulls.createReview({
               owner: context.repo.owner,
               repo: context.repo.repo,
               pull_number: context.payload.pull_request.number,
-              event: 'COMMENT',
-              body: '### Trivy Vulnerability Report\n\n' + report
+              body: comment,
+              event: 'COMMENT'
             });
