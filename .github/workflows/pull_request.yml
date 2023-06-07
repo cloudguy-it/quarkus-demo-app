@@ -46,19 +46,15 @@ jobs:
       - name: Scan Docker Image with Trivy
         run: trivy image myapp:${{ github.sha }} --format json > trivy_report.json
 
-      - name: Upload Trivy Report as Comment
-        uses: actions/github-script@v4
+      - name: Run Trivy vulnerability scanner with rootfs command
+        uses: aquasecurity/trivy-action@master
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const reportPath = './trivy_report.json';
-            const report = fs.readFileSync(reportPath, 'utf8');
-            const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
-            octokit.pulls.createReview({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              pull_number: context.payload.pull_request.number,
-              event: 'COMMENT',
-              body: '### Trivy Vulnerability Report\n\n' + report
-            });
+          image-ref: 'myapp:${{ github.sha }}'
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        with:
+          sarif_file: 'trivy-results.sarif'
