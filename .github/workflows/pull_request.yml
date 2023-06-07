@@ -53,8 +53,8 @@ jobs:
         id: upload_comment
 
       - name: Create Comment on Pull Request
-        uses: machine-learning-apps/github-comment@v1
+        uses: marocchino/sticky-pull-request-comment@v1
         with:
-          issue-number: ${{ github.event.pull_request.number }}
-          comment-file: comment.md
-          token: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          comment: |
+            $(cat comment.md)
