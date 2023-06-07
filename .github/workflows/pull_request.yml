@@ -56,5 +56,6 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v1
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          comment: |
+          header: trivy-report
+          message: |
             $(cat comment.md)
