@@ -28,10 +28,9 @@ jobs:
       - name: Change Permission
         run: |
            chmod +x gradlew
+           
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
-        with:
-          arguments: build
+        run: ./gradlew quarkusBuild
       
       - name: Build Docker Image
         run: docker build -f src/main/docker/Dockerfile.jvm -t myapp:${{ github.sha }} .
@@ -59,14 +58,12 @@ jobs:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
-            const { github } = require('@actions/github');
             const commentPath = ${{ steps.upload_comment.outputs.comment_path }};
             const comment = fs.readFileSync(commentPath, 'utf8');
-            const octokit = github.getOctokit(process.env.GITHUB_TOKEN);
-            octokit.rest.pulls.createReview({
-              owner: github.context.repo.owner,
-              repo: github.context.repo.repo,
-              pull_number: github.context.payload.pull_request.number,
+            github.rest.pulls.createReview({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.payload.pull_request.number,
               body: comment,
               event: 'COMMENT'
             });
