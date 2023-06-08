@@ -49,23 +49,20 @@ jobs:
         run: |
           report=$(cat trivy_report.json)
           echo "### Trivy Vulnerability Report\n\n$report" > comment.md
-          echo "::set-output name=comment_path::comment.md"
+          echo "::set-output name=comment_path::comment.md" | tee -a comment-formated
         id: upload_comment
-
-      - name: Read Comment File
-        id: read_comment
-        uses: actions/github-script@v4
+        
+      - name: Read trivy report url
+        id: trivy_report
+        uses: juliangruber/read-file-action@v1.0.0
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const fs = require('fs');
-            const comment = fs.readFileSync('comment.md', 'utf8');
-            console.log(comment);
-            console.log("::set-output name=comment::$comment");
-
-      - name: Create Comment on Pull Request
+          path: comment-formated
+          
+      - name: trivy comment
         uses: marocchino/sticky-pull-request-comment@v1
         with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
           header: "Trivy Vulnerability Report"
-          message: ${{ steps.read_comment.outputs.comment }}
+          message: |
+            ## Trivy report
+            ${{ steps.trivy_report.outputs.content }}
