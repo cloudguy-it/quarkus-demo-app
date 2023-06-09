@@ -56,14 +56,13 @@ jobs:
         id: trivy_report
         uses: juliangruber/read-file-action@v1.0.0
         with:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
           path: comment-formated
           
       - name: trivy comment
         uses: marocchino/sticky-pull-request-comment@v1
         with:
           GITHUB_TOKEN: ${{ secrets.TOKEN }}
-          header: "Trivy Vulnerability Report"
+          header: trivy-report
           message: |
             ## Trivy report
             ${{ steps.trivy_report.outputs.content }}
