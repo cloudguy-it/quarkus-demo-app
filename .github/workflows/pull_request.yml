@@ -56,6 +56,7 @@ jobs:
         id: trivy_report
         uses: juliangruber/read-file-action@v1.0.0
         with:
+          GITHUB_TOKEN: ${{ secrets.TOKEN }}
           path: comment-formated
           
       - name: trivy comment
