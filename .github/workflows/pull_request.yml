@@ -42,27 +42,14 @@ jobs:
           ls
           sudo mv trivy /usr/local/bin/
 
-      - name: Scan Docker Image with Trivy
-        run: trivy image myapp:${{ github.sha }} --format json > trivy_report.json
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'myapp:${{ github.sha }}'
+          format: 'sarif'
+          output: 'trivy-results.sarif'
 
-      - name: Upload Trivy Report as Comment
-        run: |
-          report=$(cat trivy_report.json)
-          echo "### Trivy Vulnerability Report\n\n$report" > comment.md
-          echo "::set-output name=comment_path::comment.md" | tee -a comment-formated
-        id: upload_comment
-        
-      - name: Read trivy report url
-        id: trivy_report
-        uses: juliangruber/read-file-action@v1.0.0
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
         with:
-          path: comment-formated
-          
-      - name: trivy comment
-        uses: marocchino/sticky-pull-request-comment@v1
-        with:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
-          header: trivy-report
-          message: |
-            ## Trivy report
-            ${{ steps.trivy_report.outputs.content }}
+          sarif_file: 'trivy-results.sarif'
