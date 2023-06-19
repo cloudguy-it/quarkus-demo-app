@@ -33,6 +33,14 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
+jacocoTestReport {
+        reports {
+            xml.enabled false
+            csv.enabled true
+            html.enabled true
+        }
+    }
+
 compileJava {
     options.encoding = 'UTF-8'
     options.compilerArgs << '-parameters'
