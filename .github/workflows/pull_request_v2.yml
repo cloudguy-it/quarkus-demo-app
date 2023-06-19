@@ -35,12 +35,12 @@ jobs:
         run: ./gradlew test
 
       - name: Generate JaCoCo badge
-      id: jacoco
-      uses: cicirello/jacoco-badge-generator@v2
-      with:
-        badges-directory: badges
-        generate-branches-badge: true
-        generate-summary: true
+        id: jacoco
+        uses: cicirello/jacoco-badge-generator@v2
+        with:
+          badges-directory: badges
+          generate-branches-badge: true
+          generate-summary: true
 
     - name: Log coverage percentages to workflow output
       run: |
