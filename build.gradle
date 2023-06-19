@@ -33,13 +33,17 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
+jacoco {
+    toolVersion = "0.8.10"
+}
+
 jacocoTestReport {
-        reports {
-            xml.enabled false
-            csv.enabled true
-            html.enabled true
-        }
+    reports {
+        xml.required = false
+        csv.required = true
+        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
     }
+}
 
 compileJava {
     options.encoding = 'UTF-8'
