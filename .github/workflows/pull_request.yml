@@ -1,8 +1,6 @@
 name: Build and Analyze Project
 on:
   pull_request:
-    types:
-      - opened
 
 jobs:
   build_and_analyze:
