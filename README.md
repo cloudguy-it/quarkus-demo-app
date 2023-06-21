@@ -1,6 +1,6 @@
-![Coverage](.github/badges/jacoco.svg)
+![Coverage](badges/jacoco.svg)
 
-![Branches](.github/badges/branches.svg)
+![Branches](badges/branches.svg)
 
 # Quarkus playground
 
