@@ -1,4 +1,4 @@
-![CI](https://github.com/cloudguy-it/quarkus-demo-app/blob/main/.github/workflows/trivy.yml/badge.svg) ![Coverage](badges/jacoco.svg)  ![Branches](badges/branches.svg)
+[![CI](https://github.com/cloudguy-it/quarkus-demo-app/actions/workflows/pull_request_v2.yml/badge.svg)](https://github.com/cloudguy-it/quarkus-demo-app/actions/workflows/pull_request_v2.yml) ![Coverage](badges/jacoco.svg)  ![Branches](badges/branches.svg)
 
 # Quarkus playground
 
