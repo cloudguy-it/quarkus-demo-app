@@ -25,6 +25,10 @@ dependencies {
     testImplementation 'io.rest-assured:rest-assured'
 }
 
+test {
+    useJUnitPlatform()
+}
+
 group 'com.dlika'
 version '1.0.0-SNAPSHOT'
 
@@ -37,13 +41,10 @@ jacoco {
     toolVersion = "0.8.10"
 }
 
-jacocoTestReport {
-    reports {
-        xml.required = false
-        csv.required = true
-        html.outputLocation = layout.buildDirectory.dir('jacocoHtml')
-    }
+tasks.withType(Test) {
+    jacoco.includeNoLocationClasses = true
 }
+
 
 compileJava {
     options.encoding = 'UTF-8'
@@ -52,4 +53,37 @@ compileJava {
 
 compileTestJava {
     options.encoding = 'UTF-8'
+}
+
+tasks.create(name: "testCoverage", type: JacocoReport, dependsOn: "test") {
+
+    group = "Reporting"
+    description = "Generate Jacoco coverage reports for the test build."
+
+    reports {
+        html.enabled = true
+        xml.enabled = true
+    }
+
+    def excludes = [
+            '**/*Test*.*',
+            '**/actions/*.*',
+            '**/core/*.*',
+            '**/markers/*.*',
+            '**/services/**/*.*',
+            '**/toolwindow/*.*',
+            '**/utils/*.*'
+    ]
+
+    def javaClasses = fileTree(dir: "${buildDir}/classes/java/main", excludes: excludes)
+    def kotlinClasses = fileTree(dir: "${buildDir}/classes/kotlin/main", excludes: excludes)
+    classDirectories.from = files([javaClasses, kotlinClasses])
+
+    sourceDirectories.from = files([
+            "$project.projectDir/src/main/java",
+            "$project.projectDir/src/main/kotlin",
+            "$buildDir/generated/source/kapt/test"
+    ])
+
+    executionData.from = files("${project.buildDir}/jacoco/test.exec")
 }
