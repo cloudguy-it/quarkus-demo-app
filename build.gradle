@@ -35,6 +35,7 @@ java {
 
 jacoco {
     toolVersion = "0.8.10"
+    reportsDir = file("$buildDir/jacoco")
 }
 
 jacocoTestReport {
