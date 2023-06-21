@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'io.quarkus'
+    id 'jacoco'
 }
 
 repositories {
@@ -32,6 +33,19 @@ java {
     targetCompatibility = JavaVersion.VERSION_11
 }
 
+jacoco {
+    toolVersion = "0.8.10"
+    reportsDir = file("$buildDir/jacoco")
+}
+
+jacocoTestReport {
+        reports {
+            xml.enabled true
+            csv.enabled true
+            html.enabled true
+        }
+    }
+
 compileJava {
     options.encoding = 'UTF-8'
     options.compilerArgs << '-parameters'
@@ -39,4 +53,10 @@ compileJava {
 
 compileTestJava {
     options.encoding = 'UTF-8'
+}
+
+test {
+    jacoco {
+        excludeClassLoaders = ["*QuarkusClassLoader"]
+    }
 }

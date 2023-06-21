@@ -1,0 +1,63 @@
+name: Build and Analyze Project
+on:
+  pull_request:
+
+jobs:
+  trivy_analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+        
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: '14'
+
+      - name: Install @actions/github
+        run: npm install @actions/github
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Change Permission
+        run: |
+           chmod +x gradlew
+           
+      - name: Build with Gradle
+        run: ./gradlew quarkusBuild
+      
+      - name: Build Docker Image
+        run: docker build -f src/main/docker/Dockerfile.jvm -t myapp:${{ github.sha }} .
+
+      - name: Install Trivy
+        run: |
+          wget https://github.com/aquasecurity/trivy/releases/download/v0.42.1/trivy_0.42.1_Linux-64bit.tar.gz
+          tar zxvf trivy_0.42.1_Linux-64bit.tar.gz
+          ls
+          sudo mv trivy /usr/local/bin/
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'myapp:${{ github.sha }}'
+          format: 'table'
+          exit-code: '0'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+        continue-on-error: true
+
+      - uses: actions/github-script@v6
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: 'Thanks for reporting! 1'
+            })
+      
