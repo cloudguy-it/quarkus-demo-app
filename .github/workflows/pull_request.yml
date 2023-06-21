@@ -3,7 +3,7 @@ on:
   pull_request:
 
 jobs:
-  build_and_analyze:
+  build_and_analyze_1:
     runs-on: ubuntu-latest
 
     steps:
