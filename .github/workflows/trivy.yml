@@ -51,19 +51,6 @@ jobs:
           severity: 'CRITICAL,HIGH'
         continue-on-error: true
 
-      - name: "Security reports"
-        uses: dreamquark-ai/ci-security-report@main
-        env:
-          GITHUB_PAT: ${{secrets.PAT_SECURITY_REPORT_ACTION_EXAMPLE}}
-        with:
-          image: 'python'
-          base-tag: '3.8-buster'
-          new-tag: 'security-test'
-          orga: 'PaulBarrie'
-          repo: 'ci-security-report-example'
-          pr-nb: ${{ github.event.number }}
-          topic: 'github-example'
-
       - uses: actions/github-script@v6
         with:
           script: |

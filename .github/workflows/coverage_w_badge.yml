@@ -1,6 +1,8 @@
 
 name: Build and Analyze Project
 on:
+  push:
+    branches: [ main ]
   pull_request:
 
 jobs:
