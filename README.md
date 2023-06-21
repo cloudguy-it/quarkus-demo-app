@@ -1,3 +1,7 @@
+![Coverage](.github/badges/jacoco.svg)
+
+![Branches](.github/badges/branches.svg)
+
 # Quarkus playground
 
 [![CircleCI](https://circleci.com/gh/DonaldLika/quarkus-playground.svg?style=shield&circle-token=e8f15aad92244e14d81e773e17af4dfcd4d587f)](https://github.com/DonaldLika/quarkus-playground)

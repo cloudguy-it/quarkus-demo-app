@@ -4,7 +4,7 @@ on:
   pull_request:
 
 jobs:
-  build_and_analyze_2:
+  coverage_w_badge:
     runs-on: ubuntu-latest
 
     steps:

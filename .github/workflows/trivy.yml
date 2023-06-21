@@ -3,7 +3,7 @@ on:
   pull_request:
 
 jobs:
-  build_and_analyze_1:
+  trivy_analyze:
     runs-on: ubuntu-latest
 
     steps:
