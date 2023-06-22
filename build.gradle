@@ -23,9 +23,11 @@ dependencies {
     implementation 'io.quarkus:quarkus-resteasy'
     testImplementation 'io.quarkus:quarkus-junit5'
     testImplementation 'io.rest-assured:rest-assured'
+    testImplementation 'io.quarkus:quarkus-junit5-mockito'
+    testImplementation 'org.mockito:mockito-inline:3.7.7'
 }
 
-group 'com.dlika'
+group 'org.acme'
 version '1.0.0-SNAPSHOT'
 
 java {

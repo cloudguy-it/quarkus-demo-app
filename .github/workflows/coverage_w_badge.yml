@@ -1,5 +1,4 @@
-
-name: Build and Analyze Project
+name: Coverage with Badge
 on:
   push:
     branches: [ main ]
@@ -41,7 +40,7 @@ jobs:
         uses: cicirello/jacoco-badge-generator@v2
         with:
           jacoco-csv-file: ./build/jacoco/test/jacocoTestReport.csv
-          badges-directory: badges
+          badges-directory: ./github/badges
           generate-branches-badge: true
           generate-summary: true
 
