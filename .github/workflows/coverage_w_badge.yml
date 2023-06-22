@@ -1,5 +1,4 @@
-
-name: Build and Analyze Project
+name: Coverage with Badge
 on:
   push:
     branches: [ main ]
@@ -41,7 +40,7 @@ jobs:
         uses: cicirello/jacoco-badge-generator@v2
         with:
           jacoco-csv-file: ./build/jacoco/test/jacocoTestReport.csv
-          badges-directory: badges
+          badges-directory: .github/badges
           generate-branches-badge: true
           generate-summary: true
 
@@ -59,7 +58,7 @@ jobs:
       - name: Commit and push the coverage badges and summary file
         if: ${{ github.event_name != 'pull_request' }}
         run: |
-          cd badges
+          cd .github/badges
           if [[ `git status --porcelain *.svg *.json` ]]; then
             git config --global user.name 'github-actions'
             git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
@@ -71,7 +70,7 @@ jobs:
       - name: Comment on PR with coverage percentages
         if: ${{ github.event_name == 'pull_request' }}
         run: |
-          REPORT=$(<badges/coverage-summary.json)
+          REPORT=$(<.github/badges/coverage-summary.json)
           COVERAGE=$(jq -r '.coverage' <<< "$REPORT")%
           BRANCHES=$(jq -r '.branches' <<< "$REPORT")%
           NEWLINE=$'\n'

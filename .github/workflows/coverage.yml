@@ -1,4 +1,4 @@
-name: Measure coverage
+name: Coverage
 
 on:
   push:
