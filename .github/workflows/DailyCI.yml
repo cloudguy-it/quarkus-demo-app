@@ -21,9 +21,9 @@ jobs:
            chmod +x gradlew
            
       - name: Build with Gradle
-        run: ./gradlew quarkusBuild
+        run: ./gradlewd quarkusBuilddd
 
       - name: Test with Gradle
-        run: ./gradlew test
+        run: ./gradlew testdd
 
       
