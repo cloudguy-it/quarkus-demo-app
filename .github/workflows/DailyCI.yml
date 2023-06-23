@@ -2,8 +2,6 @@ name: Daily CI
 on:
   push:
     branches: [ main ]
-  pull_request:
-
 
 jobs:
   trivy_analyze:
@@ -23,9 +21,7 @@ jobs:
            chmod +x gradlew
            
       - name: Build with Gradle
-        run: ./gradlewd quarkusBuilddd
+        run: ./gradlew quarkusBuild
 
       - name: Test with Gradle
-        run: ./gradlew testdd
-
-      
+        run: ./gradlew test
