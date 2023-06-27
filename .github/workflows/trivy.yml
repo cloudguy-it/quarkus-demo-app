@@ -75,7 +75,7 @@ jobs:
       - uses: buildingcash/json-to-markdown-table-action@v1
         id: table
         with:
-          json: ${{ steps.trivyjson.outputs }}
+          json: report.json
       - run: echo ${{ steps.table.outputs.table }}
 
       - uses: buildingcash/json-to-markdown-table-action@v1
