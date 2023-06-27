@@ -44,9 +44,9 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'myapp:${{ github.sha }}'
-          format: 'template'
+          format: 'table, template, json'
           template: '@contrib/html.tpl'
-          output: 'report.html'
+          output: 'report.html, report.json'
           exit-code: '0'
           ignore-unfixed: true
           vuln-type: 'os,library'

@@ -23,7 +23,7 @@ jobs:
     - name: Run Coverage
       run: ./gradlew test jacocoTestReport
 
-        - name: Upload Report
+    - name: Upload Report
       uses: 'actions/upload-artifact@v2'
       with:
         name: report.xml
