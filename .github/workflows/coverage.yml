@@ -43,7 +43,7 @@ jobs:
         echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
 
     - name: Generate JaCoCo badge
-      id: jacoco
+      id: jacocoBadge
       uses: cicirello/jacoco-badge-generator@v2
       with:
          jacoco-csv-file: ./build/jacoco/test/jacocoTestReport.csv
