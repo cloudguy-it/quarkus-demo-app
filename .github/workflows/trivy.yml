@@ -53,6 +53,17 @@ jobs:
           severity: 'CRITICAL,HIGH'
         continue-on-error: true
 
+      - name: Check directory
+        run: |
+          ls
+          pwd
+
+      - name: Upload Report
+        uses: 'actions/upload-artifact@v2'
+        with:
+          name: report.html
+          path: report.html
+
       - uses: actions/github-script@v6
         with:
           script: |
