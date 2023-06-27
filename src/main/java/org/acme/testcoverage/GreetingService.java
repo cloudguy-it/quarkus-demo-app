@@ -9,4 +9,8 @@ public class GreetingService {
         return "hello " + name;
     }
 
+    public String bye(String name) {
+        return "bye " + name;
+    }
+
 }
