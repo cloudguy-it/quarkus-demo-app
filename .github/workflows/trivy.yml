@@ -44,25 +44,44 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           image-ref: 'myapp:${{ github.sha }}'
-          format: 'table, template, json'
+          format: 'template'
           template: '@contrib/html.tpl'
-          output: 'report.html, report.json'
+          output: 'report.html'
           exit-code: '0'
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
         continue-on-error: true
 
-      - name: Check directory
-        run: |
-          ls
-          pwd
+      - name: Run Trivy vulnerability scanner
+        id: trivyjson
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: 'myapp:${{ github.sha }}'
+          format: 'json'
+          output: 'report.json'
+          exit-code: '0'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+        continue-on-error: true
 
       - name: Upload Report
         uses: 'actions/upload-artifact@v2'
         with:
           name: report.html
           path: report.html
+
+      - uses: buildingcash/json-to-markdown-table-action@v1
+        id: table
+        with:
+          json: ${{ steps.trivyjson.outputs }}
+      - run: echo ${{ steps.table.outputs.table }}
+
+      - uses: buildingcash/json-to-markdown-table-action@v1
+        id: table2
+        with:
+          json: report.json
 
       - uses: actions/github-script@v6
         with:
