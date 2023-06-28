@@ -67,29 +67,39 @@ jobs:
         continue-on-error: true
 
       - name: Upload Report
-        uses: 'actions/upload-artifact@v2'
+        uses: actions/upload-artifact@v2
         with:
-          name: report.html
-          path: report.html
+          name: report.json
+          path: report.json
 
-      - uses: buildingcash/json-to-markdown-table-action@v1
-        id: table
+      - name: Set up Python
+        uses: actions/setup-python@v2
         with:
-          json: report.json
-      - run: echo ${{ steps.table.outputs.table }}
+          python-version: '3.9'
 
-      - uses: buildingcash/json-to-markdown-table-action@v1
-        id: table2
-        with:
-          json: report.json
+      - name: Install dependencies
+        run: |
+          pip install json2markdown
 
-      - uses: actions/github-script@v6
+      - name: Convert JSON to Markdown
+        run: |
+          python convert_json_to_markdown.py
+
+      - name: Comment on Pull Request
+        uses: actions/github-script@v4
         with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            github.rest.issues.createComment({
-              issue_number: context.issue.number,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              body: 'Vulnerability scan performed'
+            import os
+
+            comment_file_path = 'path/to/generated/markdown/file.md'
+            with open(comment_file_path) as comment_file:
+                comment_body = comment_file.read()
+
+            github.issues.createComment({
+                'issue_number': context.issue.number,
+                'owner': context.repo.owner,
+                'repo': context.repo.repo,
+                'body': comment_body
             })
       
