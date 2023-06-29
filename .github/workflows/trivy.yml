@@ -68,7 +68,7 @@ jobs:
       - uses: buildingcash/json-to-markdown-table-action@v1
         id: table
         with:
-          json: {{steps.trivymd.outputs.reportmd}}
+          json: ${{steps.trivymd.outputs.reportmd}}
       - run: echo ${{ steps.table.outputs.table }}
 
       - uses: actions/github-script@v6
