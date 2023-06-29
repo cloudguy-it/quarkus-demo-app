@@ -10,11 +10,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
+
     - name: Set up JDK 11
       uses: actions/setup-java@v3
       with:
         java-version: '11'
         distribution: 'temurin'
+
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
@@ -29,18 +31,14 @@ jobs:
 
     - name: Jacoco Report to PR
       id: jacoco
-      uses: madrapps/jacoco-report@v1.1
+      uses: madrapps/jacoco-report@v1.4
       with:
-        path: ./build/jacoco/test/jacocoTestReport.xml
+        paths: ./build/jacoco/test/jacocoTestReport.xml
         token: ${{ secrets.GITHUB_TOKEN }}
         min-coverage-overall: 90
         min-coverage-changed-files: 90
+        title: Code Coverage Report
         debug-mode: false
-
-    - name: Get the Coverage info
-      run: |
-        echo "Total coverage ${{ steps.jacoco.outputs.coverage-overall }}"
-        echo "Changed Files coverage ${{ steps.jacoco.outputs.coverage-changed-files }}"
 
     - name: Generate JaCoCo badge
       id: jacocoBadge
@@ -49,7 +47,14 @@ jobs:
          jacoco-csv-file: ./build/jacoco/test/jacocoTestReport.csv
          badges-directory: .github/badges
          generate-branches-badge: false
-         generate-summary: true
+         generate-summary: false
+         colors: '#4c1 #97ca00 #a4a61d #dfb317 #fe7d37 #e05d44'
+         intervals: 100 90 80 70 60 0
+         on-missing-report: fail
+         fail-if-coverage-less-than: 0
+         fail-if-branches-less-than: 0
+         fail-on-coverage-decrease: false
+         fail-on-branches-decrease: false
 
     - name: Commit and push the coverage badges and summary file
       if: ${{ github.event_name != 'pull_request' }}

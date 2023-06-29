@@ -1,4 +1,4 @@
-[![DailyCI](https://github.com/cloudguy-it/quarkus-demo-app/actions/workflows/DailyCI.yml/badge.svg)](https://github.com/cloudguy-it/quarkus-demo-app/actions/workflows/DailyCI.yml) ![Coverage](.github/badges/jacoco.svg)  ![Branches](.github/badges/branches.svg)
+[![DailyCI](https://github.com/cloudguy-it/quarkus-demo-app/actions/workflows/DailyCI.yml/badge.svg)](https://github.com/cloudguy-it/quarkus-demo-app/actions/workflows/DailyCI.yml) ![Coverage](.github/badges/jacoco.svg)  
 
 # Quarkus playground
 
