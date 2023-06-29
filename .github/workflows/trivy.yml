@@ -62,7 +62,7 @@ jobs:
         id: trivymd
         run: |
           python3 .github/workflows/json2markdown.py
-          echo 'FILE1_OUTPUT<<EOF' >> $GITHUB_OUTPUT
+          echo 'TRIVYMD_OUTPUT<<EOF' >> $GITHUB_OUTPUT
           echo "$(cat report.md)" >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT          
 
@@ -70,9 +70,9 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            # Breaking changes 
-            This PR introduces Vulnerabilities. 
-            ${{ steps.trivymd.outputs.FILE1_OUTPUT }}
+            # Vulnerability Report 
+            
+            ${{ steps.trivymd.outputs.TRIVYMD_OUTPUT }}
 
 
 
