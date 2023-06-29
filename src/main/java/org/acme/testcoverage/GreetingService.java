@@ -13,8 +13,4 @@ public class GreetingService {
         return "bye " + name;
     }
 
-    public String hello(String name) {
-        return "bye " + name;
-    }
-
 }
