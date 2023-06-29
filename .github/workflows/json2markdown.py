@@ -28,17 +28,47 @@ def vulnerabilities_to_markdown(vulnerabilities):
         markdown += f"| {vulnerability['VulnerabilityID']} | {vulnerability['PkgName']} | {vulnerability['InstalledVersion']} | {vulnerability['FixedVersion']} | {vulnerability['Title']} | {vulnerability['Severity']} |\n"
     return markdown.strip()
 
+ def convert_json_to_markdown(vulnerabilities):
+     # Extract headers from the keys of the first item
+     headers = list(json_data[0].keys())
+
+     # Generate the markdown table header
+     markdown = "| " + " | ".join(headers) + " |\n"
+     markdown += "| " + " | ".join(["-" * len(header) for header in headers]) + " |\n"
+
+     # Generate the markdown table rows
+     for item in json_data:
+         row = "| " + " | ".join(str(value) for value in item.values()) + " |\n"
+         markdown += row
+
+     return markdown
+
 # Load JSON data from file
 json_data = load_json_from_file("report.json")
 
 # Extract vulnerabilities
 vulnerabilities = extract_vulnerabilities(json_data)
 
-with open("report2.json", "w") as outfile:
+print(vulnerabilities)
+
+print("ppppppppppppppppp")
+
+with open("report_compact.json", "w") as outfile:
     json.dump(vulnerabilities, outfile)
 
 # Convert vulnerabilities to Markdown table
-markdown = vulnerabilities_to_markdown(vulnerabilities)
+markdownold = vulnerabilities_to_markdown(vulnerabilities)
+markdown = convert_json_to_markdown(vulnerabilities)
+
+print(markdownold)
+
+print("pppppppppppppp")
+
+print(markdown)
+
+# Write the Markdown table to file
+with open("reportold.md", "w") as file:
+    file.write(markdownold)
 
 # Write the Markdown table to file
 with open("report.md", "w") as file:
