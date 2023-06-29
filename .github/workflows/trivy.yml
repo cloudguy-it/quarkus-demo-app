@@ -59,7 +59,7 @@ jobs:
         continue-on-error: true
 
       - name: Convert JSON to Markdown
-        run: python3 json2markdown.py
+        run: python3 .github/workflow/json2markdown.py
 
       - name: Comment on Pull Request
         run: |
