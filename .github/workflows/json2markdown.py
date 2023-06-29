@@ -30,13 +30,13 @@ def vulnerabilities_to_markdown(vulnerabilities):
 
 def convert_json_to_markdown(vulnerabilities):
     # Extract headers from the keys of the first item
-    headers = list(json_data[0].keys())
+    headers = list(vulnerabilities[0].keys())
     # Generate the markdown table header
     markdown = "| " + " | ".join(headers) + " |\n"
     markdown += "| " + " | ".join(["-" * len(header) for header in headers]) + " |\n"
 
     # Generate the markdown table rows
-    for item in json_data:
+    for item in vulnerabilities:
         row = "| " + " | ".join(str(value) for value in item.values()) + " |\n"
         markdown += row
 
