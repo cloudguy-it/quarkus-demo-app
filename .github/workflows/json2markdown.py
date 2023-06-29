@@ -15,7 +15,6 @@ def extract_vulnerabilities(data):
                 "PkgName": vulnerability.get("PkgName"),
                 "InstalledVersion": vulnerability.get("InstalledVersion"),
                 "FixedVersion": vulnerability.get("FixedVersion"),
-                "Title": vulnerability.get("Title"),
                 "Severity": vulnerability.get("Severity")
             }
             vulnerabilities.append(extracted_vulnerability)
@@ -32,7 +31,6 @@ def extract_coverage(data):
                 "PkgName": vulnerability.get("PkgName"),
                 "InstalledVersion": vulnerability.get("InstalledVersion"),
                 "FixedVersion": vulnerability.get("FixedVersion"),
-                "Title": vulnerability.get("Title"),
                 "Severity": vulnerability.get("Severity")
             }
             vulnerabilities.append(extracted_vulnerability)

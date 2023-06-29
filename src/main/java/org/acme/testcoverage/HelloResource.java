@@ -18,4 +18,5 @@ public class HelloResource {
         //return "Hello RESTEasy";
         return list;
     }
+
 }
