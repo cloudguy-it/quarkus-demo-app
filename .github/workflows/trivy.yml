@@ -65,41 +65,26 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
         continue-on-error: true
-
+      - name: Convert JSON to Markdown
+        id: json-to-markdown
+        uses: buildingcash/json-to-markdown-table-action@v1.0.0
+        with:
+          json: '${{ steps.trivyjson.outputs.report }}'
+      - name: Save Markdown file
+        run: echo "${{ steps.json-to-markdown.outputs.table }}" > report.md
       - name: Upload Report
         uses: actions/upload-artifact@v2
         with:
-          name: report.json
-          path: report.json
-
-      - name: Set up Python
-        uses: actions/setup-python@v2
-        with:
-          python-version: '3.9'
-
-      - name: Install dependencies
-        run: |
-          pip install json2markdown
-
-      - name: Convert JSON to Markdown
-        run: |
-          python convert_json_to_markdown.py
-
-      - name: Comment on Pull Request
-        uses: actions/github-script@v4
+          name: report.md
+          path: report.md
+      - name: Comment on Pull Request with Report
+        uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
-            import os
-
-            comment_file_path = 'path/to/generated/markdown/file.md'
-            with open(comment_file_path) as comment_file:
-                comment_body = comment_file.read()
-
-            github.issues.createComment({
-                'issue_number': context.issue.number,
-                'owner': context.repo.owner,
-                'repo': context.repo.repo,
-                'body': comment_body
-            })
+            const { owner, repo } = context.repo;
+            const { number } = context.issue;
+            const artifactLink = `https://github.com/${owner}/${repo}/actions/artifacts/${{ github.run_id }}/artifacts_file/report.md`;
+            const commentBody = `## Vulnerability Report\n\nThe vulnerability report is available [here](${artifactLink}).`;
+            github.issues.createComment({ owner, repo, issue_number: number, body: commentBody });
       

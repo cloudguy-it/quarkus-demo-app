@@ -1,0 +1,588 @@
+{
+  "Results": [
+    {
+      "Target": "Java",
+      "Class": "lang-pkgs",
+      "Type": "jar",
+      "Vulnerabilities": [
+        {
+          "VulnerabilityID": "CVE-2020-36518",
+          "PkgName": "com.fasterxml.jackson.core:jackson-databind",
+          "PkgPath": "deployments/lib/com.fasterxml.jackson.core.jackson-databind-2.11.3.jar",
+          "InstalledVersion": "2.11.3",
+          "FixedVersion": "2.12.6.1, 2.13.2.1",
+          "Layer": {
+            "DiffID": "sha256:4c05ee07dbde7df5ecf789c176da30c4d0f9b6ec4194e203eb1295840ff238bf"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2020-36518",
+          "DataSource": {
+            "ID": "glad",
+            "Name": "GitLab Advisory Database Community",
+            "URL": "https://gitlab.com/gitlab-org/advisories-community"
+          },
+          "Title": "denial of service via a large depth of nested objects",
+          "Description": "jackson-databind before 2.13.0 allows a Java StackOverflow exception and denial of service via a large depth of nested objects.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-787"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/errata/RHSA-2023:2312",
+            "https://access.redhat.com/security/cve/CVE-2020-36518",
+            "https://bugzilla.redhat.com/2064698",
+            "https://errata.almalinux.org/9/ALSA-2023-2312.html",
+            "https://github.com/FasterXML/jackson-databind/commit/fcfc4998ec23f0b1f7f8a9521c2b317b6c25892b",
+            "https://github.com/FasterXML/jackson-databind/issues/2816",
+            "https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.12",
+            "https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.13",
+            "https://github.com/advisories/GHSA-57j2-w4cx-62h2",
+            "https://linux.oracle.com/cve/CVE-2020-36518.html",
+            "https://linux.oracle.com/errata/ELSA-2023-2312.html",
+            "https://lists.debian.org/debian-lts-announce/2022/05/msg00001.html",
+            "https://lists.debian.org/debian-lts-announce/2022/11/msg00035.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2020-36518",
+            "https://security.netapp.com/advisory/ntap-20220506-0004/",
+            "https://www.cve.org/CVERecord?id=CVE-2020-36518",
+            "https://www.debian.org/security/2022/dsa-5283",
+            "https://www.oracle.com/security-alerts/cpuapr2022.html",
+            "https://www.oracle.com/security-alerts/cpujul2022.html"
+          ],
+          "PublishedDate": "2022-03-11T07:15:00Z",
+          "LastModifiedDate": "2022-11-29T22:12:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-46877",
+          "PkgName": "com.fasterxml.jackson.core:jackson-databind",
+          "PkgPath": "deployments/lib/com.fasterxml.jackson.core.jackson-databind-2.11.3.jar",
+          "InstalledVersion": "2.11.3",
+          "FixedVersion": "2.12.6, 2.13.1",
+          "Layer": {
+            "DiffID": "sha256:4c05ee07dbde7df5ecf789c176da30c4d0f9b6ec4194e203eb1295840ff238bf"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-46877",
+          "DataSource": {
+            "ID": "glad",
+            "Name": "GitLab Advisory Database Community",
+            "URL": "https://gitlab.com/gitlab-org/advisories-community"
+          },
+          "Title": "Possible DoS if using JDK serialization to serialize JsonNode",
+          "Description": "jackson-databind 2.10.x through 2.12.x before 2.12.6 and 2.13.x before 2.13.1 allows attackers to cause a denial of service (2 GB transient heap usage per read) in uncommon situations involving JsonNode JDK serialization.",
+          "Severity": "HIGH",
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-46877",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-46877",
+            "https://github.com/FasterXML/jackson-databind/commit/3ccde7d938fea547e598fdefe9a82cff37fed5cb",
+            "https://github.com/FasterXML/jackson-databind/commit/3ccde7d938fea547e598fdefe9a82cff37fed5cb (jackson-databind-2.12.6)",
+            "https://github.com/FasterXML/jackson-databind/commit/3ccde7d938fea547e598fdefe9a82cff37fed5cb (jackson-databind-3.13.1)",
+            "https://github.com/FasterXML/jackson-databind/issues/3328",
+            "https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.12.6",
+            "https://github.com/FasterXML/jackson/wiki/Jackson-Release-2.13.1",
+            "https://github.com/advisories/GHSA-3x8x-79m2-3w2w",
+            "https://groups.google.com/g/jackson-user/c/OsBsirPM_Vw",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-46877",
+            "https://www.cve.org/CVERecord?id=CVE-2021-46877"
+          ],
+          "PublishedDate": "2023-03-18T22:15:00Z",
+          "LastModifiedDate": "2023-05-19T19:11:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-42003",
+          "PkgName": "com.fasterxml.jackson.core:jackson-databind",
+          "PkgPath": "deployments/lib/com.fasterxml.jackson.core.jackson-databind-2.11.3.jar",
+          "InstalledVersion": "2.11.3",
+          "FixedVersion": "2.12.7.1, 2.13.4.1",
+          "Layer": {
+            "DiffID": "sha256:4c05ee07dbde7df5ecf789c176da30c4d0f9b6ec4194e203eb1295840ff238bf"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-42003",
+          "DataSource": {
+            "ID": "glad",
+            "Name": "GitLab Advisory Database Community",
+            "URL": "https://gitlab.com/gitlab-org/advisories-community"
+          },
+          "Title": "deep wrapper array nesting wrt UNWRAP_SINGLE_VALUE_ARRAYS",
+          "Description": "In FasterXML jackson-databind before 2.14.0-rc1, resource exhaustion can occur because of a lack of a check in primitive value deserializers to avoid deep wrapper array nesting, when the UNWRAP_SINGLE_VALUE_ARRAYS feature is enabled. Additional fix version in 2.13.4.1 and 2.12.17.1",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-502"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2022-42003",
+            "https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=51020",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-42003",
+            "https://github.com/FasterXML/jackson-databind/blob/2.13/release-notes/VERSION-2.x",
+            "https://github.com/FasterXML/jackson-databind/commit/0e37a39502439ecbaa1a5b5188387c01bf7f7fa1",
+            "https://github.com/FasterXML/jackson-databind/commit/7ba9ac5b87a9d6ac0d2815158ecbeb315ad4dcdc",
+            "https://github.com/FasterXML/jackson-databind/commit/cd090979b7ea78c75e4de8a4aed04f7e9fa8deea",
+            "https://github.com/FasterXML/jackson-databind/commit/d499f2e7bbc5ebd63af11e1f5cf1989fa323aa45",
+            "https://github.com/FasterXML/jackson-databind/commit/d78d00ee7b5245b93103fef3187f70543d67ca33",
+            "https://github.com/FasterXML/jackson-databind/commit/d78d00ee7b5245b93103fef3187f70543d67ca33 (jackson-databind-2.14.0-rc1)",
+            "https://github.com/FasterXML/jackson-databind/commits/jackson-databind-2.4.0-rc1?after=75b97b8519f0d50c62523ad85170d80a197a2c86+174\u0026branch=jackson-databind-2.4.0-rc1\u0026qualified_name=refs%2Ftags%2Fjackson-databind-2.4.0-rc1",
+            "https://github.com/FasterXML/jackson-databind/compare/jackson-databind-2.13.4.1...jackson-databind-2.13.4.2",
+            "https://github.com/FasterXML/jackson-databind/issues/3590",
+            "https://github.com/FasterXML/jackson-databind/issues/3627",
+            "https://github.com/advisories/GHSA-jjjh-jjxp-wpff",
+            "https://lists.debian.org/debian-lts-announce/2022/11/msg00035.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2022-42003",
+            "https://security.gentoo.org/glsa/202210-21",
+            "https://security.netapp.com/advisory/ntap-20221124-0004/",
+            "https://www.cve.org/CVERecord?id=CVE-2022-42003",
+            "https://www.debian.org/security/2022/dsa-5283"
+          ],
+          "PublishedDate": "2022-10-02T05:15:00Z",
+          "LastModifiedDate": "2022-12-02T15:14:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-42004",
+          "PkgName": "com.fasterxml.jackson.core:jackson-databind",
+          "PkgPath": "deployments/lib/com.fasterxml.jackson.core.jackson-databind-2.11.3.jar",
+          "InstalledVersion": "2.11.3",
+          "FixedVersion": "2.12.7.1, 2.13.4",
+          "Layer": {
+            "DiffID": "sha256:4c05ee07dbde7df5ecf789c176da30c4d0f9b6ec4194e203eb1295840ff238bf"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-42004",
+          "DataSource": {
+            "ID": "glad",
+            "Name": "GitLab Advisory Database Community",
+            "URL": "https://gitlab.com/gitlab-org/advisories-community"
+          },
+          "Title": "use of deeply nested arrays",
+          "Description": "In FasterXML jackson-databind before 2.13.4, resource exhaustion can occur because of a lack of a check in BeanDeserializer._deserializeFromArray to prevent use of deeply nested arrays. An application is vulnerable only with certain customized choices for deserialization.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-502"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2022-42004",
+            "https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=50490",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-42004",
+            "https://github.com/FasterXML/jackson-databind/commit/063183589218fec19a9293ed2f17ec53ea80ba88",
+            "https://github.com/FasterXML/jackson-databind/commit/063183589218fec19a9293ed2f17ec53ea80ba88 (jackson-databind-2.13.4)",
+            "https://github.com/FasterXML/jackson-databind/issues/3582",
+            "https://github.com/advisories/GHSA-rgv9-q543-rqg4",
+            "https://lists.debian.org/debian-lts-announce/2022/11/msg00035.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2022-42004",
+            "https://security.gentoo.org/glsa/202210-21",
+            "https://security.netapp.com/advisory/ntap-20221118-0008/",
+            "https://www.cve.org/CVERecord?id=CVE-2022-42004",
+            "https://www.debian.org/security/2022/dsa-5283"
+          ],
+          "PublishedDate": "2022-10-02T05:15:00Z",
+          "LastModifiedDate": "2022-12-02T15:10:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-23463",
+          "PkgName": "com.h2database:h2",
+          "PkgPath": "deployments/lib/com.h2database.h2-1.4.197.jar",
+          "InstalledVersion": "1.4.197",
+          "FixedVersion": "2.0.202",
+          "Layer": {
+            "DiffID": "sha256:4c05ee07dbde7df5ecf789c176da30c4d0f9b6ec4194e203eb1295840ff238bf"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-23463",
+          "DataSource": {
+            "ID": "glad",
+            "Name": "GitLab Advisory Database Community",
+            "URL": "https://gitlab.com/gitlab-org/advisories-community"
+          },
+          "Title": "h2database: XXE injection vulnerability",
+          "Description": "The package com.h2database:h2 from 1.4.198 and before 2.0.202 are vulnerable to XML External Entity (XXE) Injection via the org.h2.jdbc.JdbcSQLXML class object, when it receives parsed string data from org.h2.jdbc.JdbcResultSet.getSQLXML() method. If it executes the getSource() method when the parameter is DOMSource.class it will trigger the vulnerability.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-611"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:L/UI:N/S:U/C:H/I:N/A:H",
+              "V3Score": 8.1
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:P/I:N/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:N/A:H",
+              "V2Score": 6.4,
+              "V3Score": 9.1
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:L/UI:N/S:U/C:H/I:N/A:H",
+              "V3Score": 6.8
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-23463",
+            "https://github.com/advisories/GHSA-7rpj-hg47-cx62",
+            "https://github.com/boris-unckel/h2database/commit/f9ad6aef2bfa59eba2b4d3e7c4c32d2cce8e8b05",
+            "https://github.com/h2database/h2database/commit/d83285fd2e48fb075780ee95badee6f5a15ea7f8%23diff-008c2e4462609982199cd83e7cf6f1d6b41296b516783f6752c44b9f15dc7bc3",
+            "https://github.com/h2database/h2database/issues/3195",
+            "https://github.com/h2database/h2database/pull/3199",
+            "https://github.com/h2database/h2database/pull/3199#issuecomment-1002830390",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-23463",
+            "https://snyk.io/vuln/SNYK-JAVA-COMH2DATABASE-1769238",
+            "https://www.cve.org/CVERecord?id=CVE-2021-23463",
+            "https://www.oracle.com/security-alerts/cpuapr2022.html"
+          ],
+          "PublishedDate": "2021-12-10T20:15:00Z",
+          "LastModifiedDate": "2022-04-28T14:53:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-42392",
+          "PkgName": "com.h2database:h2",
+          "PkgPath": "deployments/lib/com.h2database.h2-1.4.197.jar",
+          "InstalledVersion": "1.4.197",
+          "FixedVersion": "2.0.206",
+          "Layer": {
+            "DiffID": "sha256:4c05ee07dbde7df5ecf789c176da30c4d0f9b6ec4194e203eb1295840ff238bf"
+          },
+          "SeveritySource": "ghsa",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-42392",
+          "DataSource": {
+            "ID": "ghsa",
+            "Name": "GitHub Security Advisory Maven",
+            "URL": "https://github.com/advisories?query=type%3Areviewed+ecosystem%3Amaven"
+          },
+          "Title": "h2: Remote Code Execution in Console",
+          "Description": "The org.h2.util.JdbcUtils.getConnection method of the H2 database takes as parameters the class name of the driver and URL of the database. An attacker may pass a JNDI driver name and a URL leading to a LDAP or RMI servers, causing remote code execution. This can be exploited through various attack vectors, most notably through the H2 Console which leads to unauthenticated remote code execution.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-502"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:C/I:C/A:C",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 10,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-42392",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-42392",
+            "https://github.com/advisories/GHSA-h376-j262-vhq6",
+            "https://github.com/h2database/h2database/releases/tag/version-2.0.206",
+            "https://github.com/h2database/h2database/security/advisories/GHSA-h376-j262-vhq6",
+            "https://jfrog.com/blog/the-jndi-strikes-back-unauthenticated-rce-in-h2-database-console/",
+            "https://lists.debian.org/debian-lts-announce/2022/02/msg00017.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-42392",
+            "https://security.netapp.com/advisory/ntap-20220119-0001/",
+            "https://ubuntu.com/security/notices/USN-5365-1",
+            "https://www.cve.org/CVERecord?id=CVE-2021-42392",
+            "https://www.debian.org/security/2022/dsa-5076",
+            "https://www.oracle.com/security-alerts/cpuapr2022.html",
+            "https://www.secpod.com/blog/log4shell-critical-remote-code-execution-vulnerability-in-h2database-console/"
+          ],
+          "PublishedDate": "2022-01-10T14:10:00Z",
+          "LastModifiedDate": "2023-02-24T22:15:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-23221",
+          "PkgName": "com.h2database:h2",
+          "PkgPath": "deployments/lib/com.h2database.h2-1.4.197.jar",
+          "InstalledVersion": "1.4.197",
+          "FixedVersion": "2.1.210",
+          "Layer": {
+            "DiffID": "sha256:4c05ee07dbde7df5ecf789c176da30c4d0f9b6ec4194e203eb1295840ff238bf"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-23221",
+          "DataSource": {
+            "ID": "glad",
+            "Name": "GitLab Advisory Database Community",
+            "URL": "https://gitlab.com/gitlab-org/advisories-community"
+          },
+          "Title": "h2: Loading of custom classes from remote servers through JNDI",
+          "Description": "H2 Console before 2.1.210 allows remote attackers to execute arbitrary code via a jdbc:h2:mem JDBC URL containing the IGNORE_UNKNOWN_SETTINGS=TRUE;FORBID_CREATION=FALSE;INIT=RUNSCRIPT substring, a different vulnerability than CVE-2021-42392.",
+          "Severity": "CRITICAL",
+          "CweIDs": [
+            "CWE-94"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:C/I:C/A:C",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V2Score": 10,
+              "V3Score": 9.8
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:H/I:H/A:H",
+              "V3Score": 9.8
+            }
+          },
+          "References": [
+            "http://packetstormsecurity.com/files/165676/H2-Database-Console-Remote-Code-Execution.html",
+            "http://seclists.org/fulldisclosure/2022/Jan/39",
+            "https://access.redhat.com/security/cve/CVE-2022-23221",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2022-23221",
+            "https://github.com/advisories/GHSA-45hx-wfhj-473x",
+            "https://github.com/h2database/h2database/releases/tag/version-2.1.210",
+            "https://github.com/h2database/h2database/security/advisories",
+            "https://lists.debian.org/debian-lts-announce/2022/02/msg00017.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2022-23221",
+            "https://twitter.com/d0nkey_man/status/1483824727936450564",
+            "https://ubuntu.com/security/notices/USN-5365-1",
+            "https://www.cve.org/CVERecord?id=CVE-2022-23221",
+            "https://www.debian.org/security/2022/dsa-5076",
+            "https://www.oracle.com/security-alerts/cpuapr2022.html",
+            "https://www.oracle.com/security-alerts/cpujul2022.html"
+          ],
+          "PublishedDate": "2022-01-19T17:15:00Z",
+          "LastModifiedDate": "2022-10-05T01:54:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-37136",
+          "PkgName": "io.netty:netty-codec",
+          "PkgPath": "deployments/lib/io.netty.netty-codec-4.1.49.Final.jar",
+          "InstalledVersion": "4.1.49.Final",
+          "FixedVersion": "4.1.68",
+          "Layer": {
+            "DiffID": "sha256:4c05ee07dbde7df5ecf789c176da30c4d0f9b6ec4194e203eb1295840ff238bf"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-37136",
+          "DataSource": {
+            "ID": "glad",
+            "Name": "GitLab Advisory Database Community",
+            "URL": "https://gitlab.com/gitlab-org/advisories-community"
+          },
+          "Title": "Bzip2Decoder doesn't allow setting size restrictions for decompressed data",
+          "Description": "The Bzip2 decompression decoder function doesn't allow setting size restrictions on the decompressed output data (which affects the allocation size used during decompression). All users of Bzip2Decoder are affected. The malicious input can trigger an OOME and so a DoS attack",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-400"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-37136",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-37136",
+            "https://github.com/advisories/GHSA-grg4-wf29-r9vv",
+            "https://github.com/netty/netty/blob/4.1/codec/src/main/java/io/netty/handler/codec/compression/Bzip2Decoder.java#L294",
+            "https://github.com/netty/netty/blob/4.1/codec/src/main/java/io/netty/handler/codec/compression/Bzip2Decoder.java#L305",
+            "https://github.com/netty/netty/blob/4.1/codec/src/main/java/io/netty/handler/codec/compression/Bzip2Decoder.java#L80",
+            "https://github.com/netty/netty/commit/41d3d61a61608f2223bb364955ab2045dd5e4020",
+            "https://github.com/netty/netty/security/advisories/GHSA-grg4-wf29-r9vv",
+            "https://lists.apache.org/thread.html/r06a145c9bd41a7344da242cef07977b24abe3349161ede948e30913d@%3Ccommits.druid.apache.org%3E",
+            "https://lists.apache.org/thread.html/r5406eaf3b07577d233b9f07cfc8f26e28369e6bab5edfcab41f28abb@%3Ccommits.druid.apache.org%3E",
+            "https://lists.apache.org/thread.html/r5e05eba32476c580412f9fbdfc9b8782d5b40558018ac4ac07192a04@%3Ccommits.druid.apache.org%3E",
+            "https://lists.apache.org/thread.html/r75490c61c2cb7b6ae2c81238fd52ae13636c60435abcd732d41531a0@%3Ccommits.druid.apache.org%3E",
+            "https://lists.apache.org/thread.html/rd262f59b1586a108e320e5c966feeafbb1b8cdc96965debc7cc10b16@%3Ccommits.druid.apache.org%3E",
+            "https://lists.apache.org/thread.html/rfb2bf8597e53364ccab212fbcbb2a4e9f0a9e1429b1dc08023c6868e@%3Cdev.tinkerpop.apache.org%3E",
+            "https://lists.debian.org/debian-lts-announce/2023/01/msg00008.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-37136",
+            "https://security.netapp.com/advisory/ntap-20220210-0012/",
+            "https://ubuntu.com/security/notices/USN-6049-1",
+            "https://www.cve.org/CVERecord?id=CVE-2021-37136",
+            "https://www.debian.org/security/2023/dsa-5316",
+            "https://www.oracle.com/security-alerts/cpuapr2022.html",
+            "https://www.oracle.com/security-alerts/cpujan2022.html",
+            "https://www.oracle.com/security-alerts/cpujul2022.html"
+          ],
+          "PublishedDate": "2021-10-19T15:15:00Z",
+          "LastModifiedDate": "2023-02-24T17:00:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2021-37137",
+          "PkgName": "io.netty:netty-codec",
+          "PkgPath": "deployments/lib/io.netty.netty-codec-4.1.49.Final.jar",
+          "InstalledVersion": "4.1.49.Final",
+          "FixedVersion": "4.1.68",
+          "Layer": {
+            "DiffID": "sha256:4c05ee07dbde7df5ecf789c176da30c4d0f9b6ec4194e203eb1295840ff238bf"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2021-37137",
+          "DataSource": {
+            "ID": "glad",
+            "Name": "GitLab Advisory Database Community",
+            "URL": "https://gitlab.com/gitlab-org/advisories-community"
+          },
+          "Title": "SnappyFrameDecoder doesn't restrict chunk length and may buffer skippable chunks in an unnecessary way",
+          "Description": "The Snappy frame decoder function doesn't restrict the chunk length which may lead to excessive memory usage. Beside this it also may buffer reserved skippable chunks until the whole chunk was received which may lead to excessive memory usage as well. This vulnerability can be triggered by supplying malicious input that decompresses to a very big size (via a network stream or a file) or by sending a huge skippable chunk.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-400"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V2Vector": "AV:N/AC:L/Au:N/C:N/I:N/A:P",
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V2Score": 5,
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:L/PR:N/UI:N/S:U/C:N/I:N/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2021-37137",
+            "https://cve.mitre.org/cgi-bin/cvename.cgi?name=CVE-2021-37137",
+            "https://github.com/advisories/GHSA-9vjp-v76f-g363",
+            "https://github.com/netty/netty/blob/4.1/codec/src/main/java/io/netty/handler/codec/compression/SnappyFrameDecoder.java#L171",
+            "https://github.com/netty/netty/blob/4.1/codec/src/main/java/io/netty/handler/codec/compression/SnappyFrameDecoder.java#L185",
+            "https://github.com/netty/netty/blob/4.1/codec/src/main/java/io/netty/handler/codec/compression/SnappyFrameDecoder.java#L79",
+            "https://github.com/netty/netty/commit/6da4956b31023ae967451e1d94ff51a746a9194f",
+            "https://github.com/netty/netty/security/advisories/GHSA-9vjp-v76f-g363",
+            "https://github.com/netty/netty/security/advisories/GHSA-grg4-wf29-r9vv",
+            "https://lists.apache.org/thread.html/r06a145c9bd41a7344da242cef07977b24abe3349161ede948e30913d@%3Ccommits.druid.apache.org%3E",
+            "https://lists.apache.org/thread.html/r5406eaf3b07577d233b9f07cfc8f26e28369e6bab5edfcab41f28abb@%3Ccommits.druid.apache.org%3E",
+            "https://lists.apache.org/thread.html/r5e05eba32476c580412f9fbdfc9b8782d5b40558018ac4ac07192a04@%3Ccommits.druid.apache.org%3E",
+            "https://lists.apache.org/thread.html/r75490c61c2cb7b6ae2c81238fd52ae13636c60435abcd732d41531a0@%3Ccommits.druid.apache.org%3E",
+            "https://lists.apache.org/thread.html/rd262f59b1586a108e320e5c966feeafbb1b8cdc96965debc7cc10b16@%3Ccommits.druid.apache.org%3E",
+            "https://lists.apache.org/thread.html/rfb2bf8597e53364ccab212fbcbb2a4e9f0a9e1429b1dc08023c6868e@%3Cdev.tinkerpop.apache.org%3E",
+            "https://lists.debian.org/debian-lts-announce/2023/01/msg00008.html",
+            "https://nvd.nist.gov/vuln/detail/CVE-2021-37137",
+            "https://security.netapp.com/advisory/ntap-20220210-0012/",
+            "https://ubuntu.com/security/notices/USN-6049-1",
+            "https://www.cve.org/CVERecord?id=CVE-2021-37137",
+            "https://www.debian.org/security/2023/dsa-5316",
+            "https://www.oracle.com/security-alerts/cpuapr2022.html",
+            "https://www.oracle.com/security-alerts/cpujan2022.html",
+            "https://www.oracle.com/security-alerts/cpujul2022.html"
+          ],
+          "PublishedDate": "2021-10-19T15:15:00Z",
+          "LastModifiedDate": "2023-02-24T16:16:00Z"
+        },
+        {
+          "VulnerabilityID": "CVE-2022-4147",
+          "PkgName": "io.quarkus:quarkus-vertx-http",
+          "PkgPath": "deployments/lib/io.quarkus.quarkus-vertx-http-1.10.2.Final.jar",
+          "InstalledVersion": "1.10.2.Final",
+          "FixedVersion": "2.13.5.Final, 2.14.2.Final",
+          "Layer": {
+            "DiffID": "sha256:4c05ee07dbde7df5ecf789c176da30c4d0f9b6ec4194e203eb1295840ff238bf"
+          },
+          "SeveritySource": "nvd",
+          "PrimaryURL": "https://avd.aquasec.com/nvd/cve-2022-4147",
+          "DataSource": {
+            "ID": "glad",
+            "Name": "GitLab Advisory Database Community",
+            "URL": "https://gitlab.com/gitlab-org/advisories-community"
+          },
+          "Title": "quarkus-vertx-http: Security misconfiguration of CORS : OWASP A05_2021 level in Quarkus",
+          "Description": "Quarkus CORS filter allows simple GET and POST requests with invalid Origin to proceed. Simple GET or POST requests made with XMLHttpRequest are the ones which have no event listeners registered on the object returned by the XMLHttpRequest upload property and have no ReadableStream object used in the request.",
+          "Severity": "HIGH",
+          "CweIDs": [
+            "CWE-1026"
+          ],
+          "CVSS": {
+            "ghsa": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 7.5
+            },
+            "nvd": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 7.5
+            },
+            "redhat": {
+              "V3Vector": "CVSS:3.1/AV:N/AC:H/PR:N/UI:R/S:U/C:H/I:H/A:H",
+              "V3Score": 7.5
+            }
+          },
+          "References": [
+            "https://access.redhat.com/security/cve/CVE-2022-4147",
+            "https://bugzilla.redhat.com/show_bug.cgi?id=2148867",
+            "https://github.com/advisories/GHSA-9895-g6x5-xwcp",
+            "https://nvd.nist.gov/vuln/detail/CVE-2022-4147",
+            "https://quarkus.io/blog/quarkus-2-14-2-final-released/",
+            "https://www.cve.org/CVERecord?id=CVE-2022-4147"
+          ],
+          "PublishedDate": "2022-12-06T19:15:00Z",
+          "LastModifiedDate": "2022-12-12T19:43:00Z"
+        }
+      ]
+    }
+  ]
+}
