@@ -18,4 +18,18 @@ public class HelloResource {
         //return "Hello RESTEasy";
         return list;
     }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public List<String> bye() {
+        //return "Hello RESTEasy";
+        return list;
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public List<String> greetings() {
+        //return "Hello RESTEasy";
+        return list;
+    }
 }
