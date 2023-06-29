@@ -58,12 +58,13 @@ jobs:
           severity: 'CRITICAL,HIGH'
         continue-on-error: true
 
-      - name: Read README.md File
+      - name: Convert JSON to Markdown
         id: trivymd
         run: |
           python3 .github/workflows/json2markdown.py
-          content=$(cat report.md)
-          echo "::set-output name=content::$content"
+          echo 'FILE1_OUTPUT<<EOF' >> $GITHUB_OUTPUT
+          echo "$(cat report.md)" >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT          
 
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@v2
@@ -71,7 +72,7 @@ jobs:
           message: |
             # Breaking changes 
             This PR introduces Vulnerabilities. 
-            ${{ steps.trivymd.outputs.content }}
+            ${{ steps.trivymd.outputs.FILE1_OUTPUT }}
 
 
 
