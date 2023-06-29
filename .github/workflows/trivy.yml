@@ -62,22 +62,16 @@ jobs:
         id: trivymd
         run: |
           python3 .github/workflows/json2markdown.py
-          echo $(cat report2.json)
-          echo "reportmd=$(cat report2.json)" >> $GITHUB_OUTPUT
-          
-      - uses: buildingcash/json-to-markdown-table-action@v1
-        id: table
-        with:
-          json: ${{steps.trivymd.outputs.reportmd}}
+          echo $(cat report.md)
+          echo "reportmd=$(cat report.md)" >> $GITHUB_OUTPUT
 
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
             # Breaking changes 
-            This PR introduces Vulnerabilities. Please make sure this will not break the different clients, whether they are other services or mobile apps.
-
-            ${{ steps.table.outputs.table }}
+            This PR introduces Vulnerabilities. 
+            ${{ steps.trivymd.outputs.reportmd }}
 
 
 
