@@ -70,15 +70,14 @@ jobs:
         with:
           json: ${{steps.trivymd.outputs.reportmd}}
 
-      - uses: actions/github-script@v6
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v2
         with:
-          script: |
-            github.rest.issues.createComment({
-            issue_number: context.issue.number,
-            owner: context.repo.owner,
-            repo: context.repo.repo,
-            body: ${{steps.table.outputs.table}}
-            })
+          message: |
+            # Breaking changes 
+            This PR introduces Vulnerabilities. Please make sure this will not break the different clients, whether they are other services or mobile apps.
+
+            ${{ steps.table.outputs.table }}
 
 
 
