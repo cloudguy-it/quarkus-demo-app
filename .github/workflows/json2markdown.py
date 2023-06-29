@@ -28,20 +28,19 @@ def vulnerabilities_to_markdown(vulnerabilities):
         markdown += f"| {vulnerability['VulnerabilityID']} | {vulnerability['PkgName']} | {vulnerability['InstalledVersion']} | {vulnerability['FixedVersion']} | {vulnerability['Title']} | {vulnerability['Severity']} |\n"
     return markdown.strip()
 
- def convert_json_to_markdown(vulnerabilities):
-     # Extract headers from the keys of the first item
-     headers = list(json_data[0].keys())
+def convert_json_to_markdown(vulnerabilities):
+    # Extract headers from the keys of the first item
+    headers = list(json_data[0].keys())
+    # Generate the markdown table header
+    markdown = "| " + " | ".join(headers) + " |\n"
+    markdown += "| " + " | ".join(["-" * len(header) for header in headers]) + " |\n"
 
-     # Generate the markdown table header
-     markdown = "| " + " | ".join(headers) + " |\n"
-     markdown += "| " + " | ".join(["-" * len(header) for header in headers]) + " |\n"
+    # Generate the markdown table rows
+    for item in json_data:
+        row = "| " + " | ".join(str(value) for value in item.values()) + " |\n"
+        markdown += row
 
-     # Generate the markdown table rows
-     for item in json_data:
-         row = "| " + " | ".join(str(value) for value in item.values()) + " |\n"
-         markdown += row
-
-     return markdown
+    return markdown
 
 # Load JSON data from file
 json_data = load_json_from_file("report.json")
