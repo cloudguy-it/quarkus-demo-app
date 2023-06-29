@@ -27,4 +27,15 @@ public class GreetingServiceTest {
 
         assertEquals(expectedResponse, response);
     }
+
+    @Test
+    public void testHello() {
+        GreetingService greetingService = new GreetingService();
+        String name = "Alice";
+        String expectedResponse = "bye Alice";
+
+        String response = greetingService.hello(name);
+
+        assertEquals(expectedResponse, response);
+    }
 }
