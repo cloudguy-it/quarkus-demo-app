@@ -34,6 +34,9 @@ json_data = load_json_from_file("report.json")
 # Extract vulnerabilities
 vulnerabilities = extract_vulnerabilities(json_data)
 
+with open("report.json", "w") as outfile:
+    json.dump(vulnerabilities, outfile)
+
 # Convert vulnerabilities to Markdown table
 markdown = vulnerabilities_to_markdown(vulnerabilities)
 

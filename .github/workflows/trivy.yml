@@ -62,8 +62,14 @@ jobs:
         id: trivymd
         run: |
           python3 .github/workflows/json2markdown.py
-          echo $(cat report.md)
-          echo "reportmd=$(cat report.md)" >> $GITHUB_OUTPUT
+          echo $(cat report.json)
+          echo "reportmd=$(cat report.json)" >> $GITHUB_OUTPUT
+          
+      - uses: buildingcash/json-to-markdown-table-action@v1
+        id: table
+        with:
+          json: {{steps.trivymd.outputs.reportmd}}
+      - run: echo ${{ steps.table.outputs.table }}
 
       - uses: actions/github-script@v6
         with:
