@@ -20,14 +20,29 @@ jobs:
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
 
-    - name: Run Coverage
+    - name: Run Test and Coverage
       run: ./gradlew test jacocoTestReport
 
-    - name: Upload Report
+    - name: Upload Coverage Report
       uses: 'actions/upload-artifact@v2'
       with:
         name: report.xml
         path: ./build/jacoco/test/jacocoTestReport.xml
+
+    - name: Convert UNITTEST to Markdown
+      id: unittestmd
+      run: |
+        python3 .github/workflows/json2markdown.py UNITTEST
+        echo 'UNITTESTMD_OUTPUT<<EOF' >> $GITHUB_OUTPUT
+        echo "$(cat report_UNITTEST.md)" >> $GITHUB_OUTPUT
+        echo 'EOF' >> $GITHUB_OUTPUT          
+
+    - name: Comment PR with UNITTEST results
+      uses: thollander/actions-comment-pull-request@v2
+      with:
+        message: |
+          # Test Summary Report 
+          ${{ steps.unittestmd.outputs.UNITTESTMD_OUTPUT }}
 
     - name: Jacoco Report to PR
       id: jacoco
