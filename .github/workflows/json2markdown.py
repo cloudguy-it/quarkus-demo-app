@@ -67,13 +67,13 @@ output_file = 'report_' + type + '.md'
 
 # Load JSON
 if type == 'UNITTEST':
-    json_unittest = load_html_from_file("./build/reports/tests/test/index.html")
+    json_formatted = load_html_from_file("./build/reports/tests/test/index.html")
 elif type == 'VULNERABILITY':
     json_data = load_json_from_file("report.json")
-    json_vulnerability = extract_vulnerabilities(json_data)
+    json_formatted = extract_vulnerabilities(json_data)
 
 # Convert vulnerabilities to Markdown table
-markdown = convert_json_to_markdown(vulnerabilities)
+markdown = convert_json_to_markdown(json_formatted)
 
 # Write the Markdown table to file
 with open(output_file, "w") as file:
