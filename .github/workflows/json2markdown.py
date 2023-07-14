@@ -1,5 +1,6 @@
 import json
 import sys
+import os
 from bs4 import BeautifulSoup
 
 
@@ -48,9 +49,13 @@ def extract_vulnerabilities(data):
     return vulnerabilities
 
 
-def convert_json_to_markdown(vulnerabilities):
+def convert_json_to_markdown(json_formatted):
     # Extract headers from the keys of the first item
-    headers = list(vulnerabilities[0].keys())
+    print(json_formatted)
+    print(json_formatted[0])
+    print(json_formatted[0].keys())
+    headers = list(json_formatted[0].keys())
+    print(headers)
     # Generate the markdown table header
     markdown = "| " + " | ".join(headers) + " |\n"
     markdown += "| " + " | ".join(["-" * len(header) for header in headers]) + " |\n"
@@ -64,13 +69,18 @@ def convert_json_to_markdown(vulnerabilities):
 # Getting type of report
 type = str(sys.argv[1])
 output_file = 'report_' + type + '.md'
-
+print(type)
+print('Current folder')
+print(os.getcwd())
 # Load JSON
 if type == 'UNITTEST':
     json_formatted = load_html_from_file("./build/reports/tests/test/index.html")
 elif type == 'VULNERABILITY':
     json_data = load_json_from_file("report.json")
     json_formatted = extract_vulnerabilities(json_data)
+
+print(json_formatted)
+
 
 # Convert vulnerabilities to Markdown table
 markdown = convert_json_to_markdown(json_formatted)
