@@ -67,18 +67,12 @@ def convert_json_to_markdown(formatted_json):
 # Getting type of report
 type = str(sys.argv[1])
 output_file = 'report_' + type + '.md'
-print(type)
-print('Current folder')
-print(os.getcwd())
 # Load JSON
 if type == 'UNITTEST':
     json_formatted = load_html_from_file("./build/reports/tests/test/index.html")
 elif type == 'VULNERABILITY':
     json_data = load_json_from_file("report.json")
     json_formatted = extract_vulnerabilities(json_data)
-
-print(json_formatted)
-
 
 # Convert vulnerabilities to Markdown table
 markdown = convert_json_to_markdown(json_formatted)
