@@ -5,6 +5,7 @@ from bs4 import BeautifulSoup
 
 
 def load_html_from_file(filename):
+    unittests = []
     with open(filename) as file:
         soup = BeautifulSoup(file, 'html.parser')
 
@@ -15,16 +16,16 @@ def load_html_from_file(filename):
     duration = soup.select('#duration .counter')[0].text
     successRate = soup.select('#successRate .percent')[0].text
     # Create a dictionary with extracted values
-    data = {
-        'tests': int(tests),
-        'failures': int(failures),
-        'ignored': int(ignored),
-        'duration': duration,
-        'successRate': successRate
+    extracted_result = {
+        "tests": int(tests),
+        "failures": int(failures),
+        "ignored": int(ignored),
+        "duration": duration,
+        "successRate": successRate
     }
-    # Convert dictionary to JSON
-    json_data = json.dumps(data)
-    return json_data
+    unittests.append(extracted_result)
+
+    return unittests
 
 
 def load_json_from_file(filename):
@@ -49,19 +50,16 @@ def extract_vulnerabilities(data):
     return vulnerabilities
 
 
-def convert_json_to_markdown(json_formatted):
+def convert_json_to_markdown(formatted_json):
     # Extract headers from the keys of the first item
-    print(json_formatted)
-    print(json_formatted[0])
-    print(json_formatted[0].keys())
-    headers = list(json_formatted[0].keys())
-    print(headers)
+    headers = list(formatted_json[0].keys())
+
     # Generate the markdown table header
     markdown = "| " + " | ".join(headers) + " |\n"
     markdown += "| " + " | ".join(["-" * len(header) for header in headers]) + " |\n"
 
     # Generate the markdown table rows
-    for item in vulnerabilities:
+    for item in formatted_json:
         row = "| " + " | ".join(str(value) for value in item.values()) + " |\n"
         markdown += row
     return markdown
