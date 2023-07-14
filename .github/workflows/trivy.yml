@@ -61,6 +61,7 @@ jobs:
       - name: Convert JSON to Markdown
         id: trivymd
         run: |
+          pip install BeautifulSoup4
           python3 .github/workflows/json2markdown.py VULNERABILITY
           echo 'TRIVYMD_OUTPUT<<EOF' >> $GITHUB_OUTPUT
           echo "$(cat report.md)" >> $GITHUB_OUTPUT
