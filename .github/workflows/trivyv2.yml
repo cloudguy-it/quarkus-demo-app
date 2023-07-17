@@ -1,0 +1,78 @@
+name: Trivy analysis
+on:
+  pull_request:
+
+jobs:
+  trivy_analyze:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Change Permission
+        run: |
+           chmod +x gradlew
+           
+      - name: Build with Gradle
+        run: ./gradlew quarkusBuild
+      
+      - name: Install Trivy
+        run: |
+          wget https://github.com/aquasecurity/trivy/releases/download/v0.42.1/trivy_0.42.1_Linux-64bit.tar.gz
+          tar zxvf trivy_0.42.1_Linux-64bit.tar.gz
+          ls
+          sudo mv trivy /usr/local/bin/
+
+      - name: Run Trivy vulnerability scanner template
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          format: 'template'
+          template: '@contrib/html.tpl'
+          output: 'report.html'
+          exit-code: '0'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+        continue-on-error: true
+
+      - name: Run Trivy vulnerability scanner json
+        id: trivyjson
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'fs'
+          scan-ref: '.'
+          format: 'json'
+          output: 'report.json'
+          exit-code: '0'
+          ignore-unfixed: true
+          vuln-type: 'os,library'
+          severity: 'CRITICAL,HIGH'
+        continue-on-error: true
+
+      - name: Convert JSON to Markdown
+        id: trivymd
+        run: |
+          pip install BeautifulSoup4
+          python3 .github/workflows/json2markdown.py VULNERABILITY
+          echo 'TRIVYMD_OUTPUT<<EOF' >> $GITHUB_OUTPUT
+          echo "$(cat report_VULNERABILITY.md)" >> $GITHUB_OUTPUT
+          echo 'EOF' >> $GITHUB_OUTPUT          
+
+      - name: Comment PR
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            ### Vulnerability Report 
+            
+            ${{ steps.trivymd.outputs.TRIVYMD_OUTPUT }}
+
+
+
+
