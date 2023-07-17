@@ -15,13 +15,18 @@ def load_html_from_file(filename):
     ignored = soup.select('#ignored .counter')[0].text
     duration = soup.select('#duration .counter')[0].text
     successRate = soup.select('#successRate .percent')[0].text
+    if ( int(failures) > 0 ):
+        icon = ":x:"
+    else:
+        icon = ":white_check_mark:"
     # Create a dictionary with extracted values
     extracted_result = {
-        "tests": int(tests),
-        "failures": int(failures),
-        "ignored": int(ignored),
-        "duration": duration,
-        "successRate": successRate
+        "Tests": int(tests),
+        "Failures": int(failures),
+        "Ignored": int(ignored),
+        "Duration": duration,
+        "SuccessRate": successRate,
+        "Status": icon
     }
     unittests.append(extracted_result)
 
