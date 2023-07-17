@@ -38,7 +38,6 @@ jobs:
           output: 'report.html'
           exit-code: '0'
           ignore-unfixed: true
-          vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
         continue-on-error: true
 
