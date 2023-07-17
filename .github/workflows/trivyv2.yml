@@ -33,6 +33,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
+          scan-ref: '../../'
           format: 'template'
           template: '@contrib/html.tpl'
           output: 'report.html'
@@ -46,7 +47,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
-          scan-ref: '.'
+          scan-ref: './build'
           format: 'json'
           output: 'report.json'
           exit-code: '0'
