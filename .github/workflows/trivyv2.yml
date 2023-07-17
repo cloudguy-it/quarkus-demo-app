@@ -34,9 +34,7 @@ jobs:
         with:
           scan-type: 'fs'
           scan-ref: '../../'
-          format: 'template'
-          template: '@contrib/html.tpl'
-          output: 'report.html'
+          format: 'table'
           exit-code: '0'
           ignore-unfixed: true
           severity: 'CRITICAL,HIGH'
@@ -48,8 +46,7 @@ jobs:
         with:
           scan-type: 'fs'
           scan-ref: './build'
-          format: 'json'
-          output: 'report.json'
+          format: 'table'
           exit-code: '0'
           ignore-unfixed: true
           vuln-type: 'os,library'
