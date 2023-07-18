@@ -1,6 +1,7 @@
 name: Trivy analysis
 on:
-  pull_request:
+  push:
+    branches: [ test ]
 
 jobs:
   trivy_analyze:

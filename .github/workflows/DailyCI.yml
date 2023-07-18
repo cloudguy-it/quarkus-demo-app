@@ -28,18 +28,6 @@ jobs:
           path: .
 
 
-  build_image:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v3
-        with:
-          name: artifacts
-      - name: Build Docker Image
-        run: docker build -f src/main/docker/Dockerfile.jvm -t ${{ github.repository }}:${{ github.sha }} .
-
-
   unittest_scan:
     needs: build
     runs-on: ubuntu-latest
@@ -114,13 +102,15 @@ jobs:
  
 
   trivy_vulnerabilities_scan:
-    needs: build_image
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
           name: artifacts
+      - name: Build Docker Image
+        run: docker build -f src/main/docker/Dockerfile.jvm -t ${{ github.repository }}:${{ github.sha }} .
       - name: Install Trivy
         run: |
           wget https://github.com/aquasecurity/trivy/releases/download/v0.42.1/trivy_0.42.1_Linux-64bit.tar.gz
@@ -146,7 +136,7 @@ jobs:
         id: trivyjson
         uses: aquasecurity/trivy-action@master
         with:
-          image-ref: 'myapp:${{ github.sha }}'
+          image-ref: '${{ github.repository }}:${{ github.sha }}'
           format: 'json'
           output: 'report.json'
           exit-code: '0'
