@@ -39,8 +39,8 @@ jobs:
       - name: Convert UNITTEST to Markdown
         id: unittestmd
         run: |
-          pip install BeautifulSoup4
-          python3 .github/workflows/json2markdown.py UNITTEST
+          pip3.8 install BeautifulSoup4
+          python3.8 .github/workflows/json2markdown.py UNITTEST
           echo 'UNITTESTMD_OUTPUT<<EOF' >> $GITHUB_OUTPUT
           echo "$(cat report_UNITTEST.md)" >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT          
@@ -89,7 +89,6 @@ jobs:
           fail-on-branches-decrease: false
 
       - name: Commit and push the coverage badges and summary file
-        if: ${{ github.event_name != 'pull_request' }}
         run: |
           cd .github/badges
           if [[ `git status --porcelain *.svg` ]]; then
