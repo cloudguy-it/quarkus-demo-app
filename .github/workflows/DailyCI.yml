@@ -21,12 +21,21 @@ jobs:
       - name: Run Test and Coverage
         run: ./gradlew quarkusBuild test jacocoTestReport
 
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: .
+
 
   build_image:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: artifacts
       - name: Build Docker Image
         run: docker build -f src/main/docker/Dockerfile.jvm -t ${{ github.repository }}:${{ github.sha }} .
 
@@ -35,7 +44,10 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: artifacts
       - name: Convert UNITTEST to Markdown
         id: unittestmd
         run: |
@@ -57,7 +69,10 @@ jobs:
     needs: build
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: artifacts
       - name: Jacoco Report to PR
         id: jacoco
         uses: madrapps/jacoco-report@v1.4
@@ -102,7 +117,10 @@ jobs:
     needs: build_image
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - name: Download artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: artifacts
       - name: Install Trivy
         run: |
           wget https://github.com/aquasecurity/trivy/releases/download/v0.42.1/trivy_0.42.1_Linux-64bit.tar.gz
