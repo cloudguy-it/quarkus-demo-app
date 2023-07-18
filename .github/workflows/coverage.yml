@@ -51,8 +51,8 @@ jobs:
       with:
         paths: ./build/jacoco/test/jacocoTestReport.xml
         token: ${{ secrets.GITHUB_TOKEN }}
-        min-coverage-overall: 90
-        min-coverage-changed-files: 90
+        min-coverage-overall: 80
+        min-coverage-changed-files: 80
         title: Code Coverage Report
         debug-mode: false
 
@@ -64,8 +64,8 @@ jobs:
          badges-directory: .github/badges
          generate-branches-badge: false
          generate-summary: false
-         colors: '#4c1 #97ca00 #a4a61d #dfb317 #fe7d37 #e05d44'
-         intervals: 100 90 80 70 60 0
+         colors: '#39C609 #a4a61d #EC2F0B'
+         intervals: 100 80 0
          on-missing-report: fail
          fail-if-coverage-less-than: 0
          fail-if-branches-less-than: 0

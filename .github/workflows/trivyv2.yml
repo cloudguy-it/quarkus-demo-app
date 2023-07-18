@@ -33,7 +33,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
-          scan-ref: '../../'
+          scan-ref: '../'
           format: 'table'
           exit-code: '0'
           ignore-unfixed: true
@@ -45,7 +45,7 @@ jobs:
         uses: aquasecurity/trivy-action@master
         with:
           scan-type: 'fs'
-          scan-ref: './build'
+          scan-ref: 'quarkus-demo-app'
           format: 'table'
           exit-code: '0'
           ignore-unfixed: true

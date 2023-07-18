@@ -18,5 +18,14 @@ public class HelloResourceTest {
 
         assertEquals(response, expectedList);
     }
+    @Test
+    public void testByeEndpoint() {
+        HelloResource helloResource = new HelloResource();
+        List<String> expectedList = Arrays.asList("A", "B", "C");
+
+        List<String> response = helloResource.bye();
+
+        assertEquals(response, expectedList);
+    }
 
 }
