@@ -69,7 +69,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           min-coverage-overall: 80
           min-coverage-changed-files: 80
-          title: "[Code Coverage Report] (https://www.google.com)"
+          title: "# [Code Coverage Report](https:///www.google.com)"
           debug-mode: false
 
       - name: Generate JaCoCo badge
