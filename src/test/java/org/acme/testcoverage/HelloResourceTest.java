@@ -28,4 +28,14 @@ public class HelloResourceTest {
         assertEquals(response, expectedList);
     }
 
+    @Test
+    public void testGreetingsEndpoint() {
+        HelloResource helloResource = new HelloResource();
+        List<String> expectedList = Arrays.asList("A", "B", "C");
+
+        List<String> response = helloResource.greetings();
+
+        assertEquals(response, expectedList);
+    }
+
 }
