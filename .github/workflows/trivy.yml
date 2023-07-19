@@ -1,6 +1,7 @@
 name: Trivy analysis
 on:
-  pull_request:
+  push:
+    branches: [ test ]
 
 jobs:
   trivy_analyze:
@@ -43,6 +44,7 @@ jobs:
           ignore-unfixed: true
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
+          timeout: '10m0s'
         continue-on-error: true
 
       - name: Run Trivy vulnerability scanner
@@ -61,16 +63,17 @@ jobs:
       - name: Convert JSON to Markdown
         id: trivymd
         run: |
-          python3 .github/workflows/json2markdown.py
+          pip install BeautifulSoup4
+          python3 .github/workflows/json2markdown.py VULNERABILITY
           echo 'TRIVYMD_OUTPUT<<EOF' >> $GITHUB_OUTPUT
-          echo "$(cat report.md)" >> $GITHUB_OUTPUT
+          echo "$(cat report_VULNERABILITY.md)" >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT          
 
       - name: Comment PR
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
-            # Vulnerability Report 
+            ### Vulnerability Report 
             
             ${{ steps.trivymd.outputs.TRIVYMD_OUTPUT }}
 
