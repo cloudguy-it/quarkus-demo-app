@@ -2,7 +2,7 @@ name: Coverage
 
 on:
   push:
-    branches: [ test ]
+    branches: [ main ]
 
 jobs:
   coverage:
@@ -56,6 +56,7 @@ jobs:
         debug-mode: false
 
     - name: Generate JaCoCo badge
+      if: ${{ github.event_name != 'pull_request' }}
       id: jacocoBadge
       uses: cicirello/jacoco-badge-generator@v2
       with:
