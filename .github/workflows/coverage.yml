@@ -40,7 +40,7 @@ jobs:
           fail-on-branches-decrease: false
 
       - name: Checkout badges repository
-        uses: action/checkout@v3
+        uses: actions/checkout@v3
         with:
           repository: cloudguy-it/repository-tools
           ref: main
