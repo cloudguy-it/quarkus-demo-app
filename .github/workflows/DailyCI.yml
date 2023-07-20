@@ -70,6 +70,11 @@ jobs:
           min-coverage-changed-files: 80
           title: '[Code Coverage Report ${{ github.repository }}](https:///www.google.com)'
           debug-mode: false
+      - name: Upload coverage reports to Codecov
+        uses: codecov/codecov-action@v3
+        env:
+          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
+
 
       - name: Generate JaCoCo badge
         if: ${{ github.event_name != 'pull_request' }}
