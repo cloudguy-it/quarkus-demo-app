@@ -54,6 +54,8 @@ jobs:
           pwd
           ls -ltr
           cd ${{ github.workspace }}
+          cd ${{ github.workspace }}
+          ls -ltr
           cd wiki
           pwd
           ls -ltr
