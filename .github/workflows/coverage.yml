@@ -45,6 +45,7 @@ jobs:
           repository: cloudguy-it/repository-tools
           ref: main
           path: repository-tools
+          token: ${{ secrets.REPO_TOKEN }}
       - name: doing commit badge repo
         run: |
           pwd
