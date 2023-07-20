@@ -36,7 +36,7 @@ jobs:
         uses: cicirello/jacoco-badge-generator@v2
         with:
           jacoco-csv-file: ./build/reports/jacoco/test/jacocoTestReport.csv
-          badges-directory: quarkus-demo-app.wiki/${GITHUB_REPOSITORY#*/}
+          badges-directory: quarkus-demo-app.wiki/${{ github.event.repository.name }}
           generate-branches-badge: false
           generate-summary: false
           colors: '#39C609 #a4a61d #EC2F0B'
