@@ -54,9 +54,8 @@ jobs:
           pwd
           ls -ltr
           cd ${{ github.workspace }}
-          cd ${{ github.workspace }}
           ls -ltr
-          cd wiki
+          cd quarkus-demo-app.wiki
           pwd
           ls -ltr
           if [[ `git status --porcelain *.svg` ]]; then
