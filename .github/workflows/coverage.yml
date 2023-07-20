@@ -44,8 +44,7 @@ jobs:
         with:
           repository: cloudguy-it/repository-tools
           ref: main
-          path: badges
-          token: ${{ secrets.GITHUB_TOKEN }}
+          path: repository-tools
       - name: doing commit badge repo
         run: |
           pwd
