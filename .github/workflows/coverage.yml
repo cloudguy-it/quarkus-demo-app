@@ -28,7 +28,7 @@ jobs:
         uses: cicirello/jacoco-badge-generator@v2
         with:
           jacoco-csv-file: ./build/reports/jacoco/test/jacocoTestReport.csv
-          badges-directory: $GITHUB_WORKSPACE/wiki
+          badges-directory: ${{ github.workspace }}/wiki
           generate-branches-badge: false
           generate-summary: false
           colors: '#39C609 #a4a61d #EC2F0B'
@@ -43,7 +43,11 @@ jobs:
       - name: Commit and push the coverage badges and summary file
         if: ${{ github.event_name != 'pull_request' }}
         run: |
-          cd $GITHUB_WORKSPACE/wiki
+          pwd
+          ls -ltr
+          cd ${{ github.workspace }}/wiki
+          pwd
+          ls -ltr
           if [[ `git status --porcelain *.svg` ]]; then
             git config --global user.name 'github-actions'
             git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
