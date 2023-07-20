@@ -39,6 +39,19 @@ jobs:
           fail-on-coverage-decrease: false
           fail-on-branches-decrease: false
 
+      - name: Checkout badges repository
+        uses: action/checkout@v3
+        with:
+          repository: cloudguy-it/repository-tools
+          ref: main
+          path: badges
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: doing commit badge repo
+        run: |
+          pwd
+          ls -ltr
+          git status
+
       - name: Commit and push the coverage badges and summary file
         if: ${{ github.event_name != 'pull_request' }}
         run: |
