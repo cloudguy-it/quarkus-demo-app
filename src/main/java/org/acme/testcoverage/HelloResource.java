@@ -33,5 +33,12 @@ public class HelloResource {
         return list;
     }
 
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public List<String> morning() {
+        //return "Hello RESTEasy";
+        return list;
+    }
+
 
 }
