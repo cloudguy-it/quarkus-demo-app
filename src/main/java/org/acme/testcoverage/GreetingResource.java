@@ -28,4 +28,10 @@ public class GreetingResource {
     public String hello() {
         return "hello";
     }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    public String bye() {
+        return "bye";
+    }
 }

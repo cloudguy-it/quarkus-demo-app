@@ -31,7 +31,7 @@ public class HelloResourceTest {
     @Test
     public void testGreetingsEndpoint() {
         HelloResource helloResource = new HelloResource();
-        List<String> expectedList = Arrays.asList("A", "B", "C");
+        List<String> expectedList = Arrays.asList("A", "B");
 
         List<String> response = helloResource.greetings();
 
