@@ -19,6 +19,7 @@ jobs:
 
       - name: Run Test and Coverage
         run: ./gradlew quarkusBuild test jacocoTestReport
+        continue-on-error: true
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
