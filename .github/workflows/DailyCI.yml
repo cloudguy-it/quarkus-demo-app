@@ -17,8 +17,11 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
+      - name: Run build
+        run: ./gradlew clean quarkusBuild
+
       - name: Run Test and Coverage
-        run: ./gradlew quarkusBuild test jacocoTestReport
+        run: ./gradlew test jacocoTestReport
         continue-on-error: true
 
       - name: Upload artifacts
