@@ -70,7 +70,7 @@ jobs:
           edit-mode: replace
 
   jacoco_coverage_scan:
-    needs: build
+    needs: [build, unittest_scan]
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
