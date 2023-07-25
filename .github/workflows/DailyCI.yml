@@ -46,6 +46,7 @@ jobs:
 
 
   unittest_scan:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
