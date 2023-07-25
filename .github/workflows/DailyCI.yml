@@ -37,6 +37,8 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: artifacts
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
       - name: Run Unit Test
         run: ./gradlew test
         continue-on-error: true
@@ -75,6 +77,8 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: artifacts
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
       - name: Run Coverage Test
         run: ./gradlew jacocoTestReport
         continue-on-error: true
