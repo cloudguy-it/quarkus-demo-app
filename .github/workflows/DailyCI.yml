@@ -20,9 +20,7 @@ jobs:
       - name: Run build
         run: ./gradlew clean quarkusBuild
 
-      - name: Run Test and Coverage
-        run: ./gradlew test jacocoTestReport
-        continue-on-error: true
+
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
@@ -39,6 +37,9 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: artifacts
+      - name: Run Unit Test
+        run: ./gradlew test
+        continue-on-error: true
       - name: Convert UNITTEST to Markdown
         id: unittestmd
         run: |
@@ -74,6 +75,9 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: artifacts
+      - name: Run Coverage Test
+        run: ./gradlew jacocoTestReport
+        continue-on-error: true
       - name: Jacoco Report to PR
         id: jacoco
         uses: madrapps/jacoco-report@v1.4
