@@ -108,6 +108,14 @@ jobs:
           title: '[Code Coverage Report ${{ github.repository }}](https:///www.google.com)'
           debug-mode: false
           update-comment: true
+          pass-emoji: ':green_circle:'
+          fail-emoji: ':red_circle:'
+      - name: Fail PR if overall coverage is less than required
+        if: ${{ steps.jacoco_coverage_scanner.outputs.coverage-overall < 80.0 }}
+        uses: actions/github-script@v6
+        with:
+          script: |
+            core.setFailed('Overall coverage is less than 80%!')
 
   trivy_vulnerabilities_scanner:
     needs: build
