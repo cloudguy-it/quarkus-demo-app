@@ -13,15 +13,31 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-
       - name: Run build
         run: ./gradlew clean quarkusBuild
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: .
 
 
-
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Run build
+        run: ./gradlew test
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -30,7 +46,7 @@ jobs:
 
 
   unittest_scan:
-    needs: build
+    needs: test
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
@@ -39,7 +55,7 @@ jobs:
           name: artifacts
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-      - name: Run Unit Test
+      - name: Run build
         run: ./gradlew test
         continue-on-error: true
       - name: Convert UNITTEST to Markdown
@@ -50,7 +66,6 @@ jobs:
           echo 'UNITTESTMD_OUTPUT<<EOF' >> $GITHUB_OUTPUT
           echo "$(cat report_UNITTEST.md)" >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
-
       - name: Find Unittest Comment if exist
         uses: peter-evans/find-comment@v2
         id: fc
@@ -58,7 +73,6 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
           body-includes: Test Summary Report
-
       - name: Create or update Unittest comment
         uses: peter-evans/create-or-update-comment@v3
         with:
@@ -70,7 +84,7 @@ jobs:
           edit-mode: replace
 
   jacoco_coverage_scan:
-    needs: [build, unittest_scan]
+    needs: unittest_scan
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
@@ -110,7 +124,6 @@ jobs:
           tar zxvf trivy_0.42.1_Linux-64bit.tar.gz
           ls
           sudo mv trivy /usr/local/bin/
-
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
@@ -124,7 +137,6 @@ jobs:
           severity: 'CRITICAL,HIGH'
           timeout: '10m0s'
         continue-on-error: true
-
       - name: Run Trivy vulnerability scanner
         id: trivyjson
         uses: aquasecurity/trivy-action@master
@@ -137,7 +149,6 @@ jobs:
           vuln-type: 'os,library'
           severity: 'CRITICAL,HIGH'
         continue-on-error: true
-
       - name: Convert JSON to Markdown
         id: trivymd
         run: |
@@ -146,7 +157,6 @@ jobs:
           echo 'TRIVYMD_OUTPUT<<EOF' >> $GITHUB_OUTPUT
           echo "$(cat report_VULNERABILITY.md)" >> $GITHUB_OUTPUT
           echo 'EOF' >> $GITHUB_OUTPUT
-
       - name: Find trivy Comment if exist
         uses: peter-evans/find-comment@v2
         id: fc
@@ -154,7 +164,6 @@ jobs:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: 'github-actions[bot]'
           body-includes: Trivy Vulnerability report
-
       - name: Create or update trivy comment
         uses: peter-evans/create-or-update-comment@v3
         with:
