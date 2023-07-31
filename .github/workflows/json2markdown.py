@@ -32,12 +32,11 @@ def load_html_from_file(filename):
     return unittests
 
 def load_vulnerabilities_html(filename):
-
     # Parse the HTML content with BeautifulSoup
     print('starting script')
     with open(filename) as file:
-    print('Opening file')
-    soup = BeautifulSoup(file, 'html.parser')
+        print('Opening file')
+        soup = BeautifulSoup(file, 'html.parser')
 
     # Find all rows containing vulnerability information
     rows = soup.find_all('tr', class_=['severity-HIGH', 'severity-CRITICAL'])  # Assuming all vulnerability rows have the class 'severity-HIGH'
