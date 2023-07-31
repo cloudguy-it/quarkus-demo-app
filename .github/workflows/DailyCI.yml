@@ -99,7 +99,7 @@ jobs:
         continue-on-error: true
       - name: Jacoco Report to PR
         id: jacoco
-        uses: madrapps/jacoco-report@v1.5
+        uses: madrapps/jacoco-report@v1.6.1
         with:
           paths: ./build/reports/jacoco/test/jacocoTestReport.xml
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -108,12 +108,14 @@ jobs:
           title: '[Code Coverage Report ${{ github.repository }}](https:///www.google.com)'
           debug-mode: false
           update-comment: true
+          pass-emoji: ":white_check_mark:"
+          fail-emoji: ":x:"
       - name: Fail PR if overall coverage is less than required
         if: ${{ steps.jacoco.outputs.coverage-changed-files < 80.0 }}
         uses: actions/github-script@v6
         with:
           script: |
-            core.setFailed('Overall coverage is less than 80%! ${{ steps.jacoco.outputs.coverage-changed-files }} ')
+            core.setFailed('Overall coverage is less than 80%! ${{ steps.jacoco.outputs.coverage-changed-files')
 
   trivy_vulnerabilities_scanner:
     needs: build
