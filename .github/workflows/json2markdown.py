@@ -43,14 +43,18 @@ def load_vulnerabilities_html(filename):
 
     vulnerabilities = []
     for row in rows:
-        vulnerability_id = row.find('td', text=lambda text: 'CVE-' in text)
+        vulnerability_id = row.find('td', string=lambda text: 'CVE-' in text)
         if vulnerability_id:
             package = row.find('td', class_='pkg-name').text.strip()
             severity = row.find('td', class_='severity').text.strip()
             installed_version = row.find('td', class_='pkg-version').text.strip()
 
             # Extract the fixed versions as a list from the correct <td> element
-            fixed_version = [version.strip() for version in row.find_all('td')[4].text.split(',')]
+            fixed_versions_list = [version.strip() for version in row.find_all('td')[4].text.split(',')]
+            fixed_version = ', '.join(fixed_versions_list)
+
+            print('fixed version')
+            print(fixed_version)
 
 
             # Append the vulnerability information to the list
@@ -117,8 +121,7 @@ output_file = 'report_' + type + '.md'
 if type == 'UNITTEST':
     json_formatted = load_html_from_file("./build/reports/tests/test/index.html")
 elif type == 'VULNERABILITY':
-    json_data = load_vulnerabilities_html("report.html")
-    json_formatted = extract_vulnerabilities(json_data)
+    json_formatted = load_vulnerabilities_html("report.html")
 
 # Convert json data to Markdown table
 markdown = convert_json_to_markdown(json_formatted)
