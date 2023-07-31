@@ -31,9 +31,50 @@ public class HelloResourceTest {
     @Test
     public void testGreetingsEndpoint() {
         HelloResource helloResource = new HelloResource();
-        List<String> expectedList = Arrays.asList("A", "B");
+        List<String> expectedList = Arrays.asList("A", "B", "C");
 
         List<String> response = helloResource.greetings();
+
+        assertEquals(response, expectedList);
+    }
+
+    @Test
+    public void testMorningsEndpoint() {
+        HelloResource helloResource = new HelloResource();
+        List<String> expectedList = Arrays.asList("A", "B", "C");
+
+        List<String> response = helloResource.morning();
+
+        assertEquals(response, expectedList);
+    }
+
+    @Test
+    public void testDayEndpoint() {
+        HelloResource helloResource = new HelloResource();
+        List<String> expectedList = Arrays.asList("A", "B", "C");
+
+        List<String> response = helloResource.day();
+
+        assertEquals(response, expectedList);
+    }
+
+    @Test
+    public void testTest1Endpoint() {
+        HelloResource helloResource = new HelloResource();
+        List<String> expectedList = Arrays.asList("A", "B", "C");
+
+        List<String> response = helloResource.test1();
+
+        assertEquals(response, expectedList);
+    }
+
+
+    @Test
+    public void testTest2Endpoint() {
+        HelloResource helloResource = new HelloResource();
+        List<String> expectedList = Arrays.asList("A", "B", "C");
+
+        List<String> response = helloResource.test2();
 
         assertEquals(response, expectedList);
     }

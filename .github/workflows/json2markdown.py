@@ -59,11 +59,11 @@ def load_vulnerabilities_html(filename):
 
             # Append the vulnerability information to the list
             vulnerabilities.append({
-                'Package': package,
                 'Vulnerability ID': vulnerability_id.text.strip(),
-                'Severity': severity,
+                'Package': package,
                 'Installed Version': installed_version,
-                'Fixed Version': fixed_version
+                'Fixed Version': fixed_version,
+                'Severity': severity
             })
 
     # Print all extracted vulnerabilities
