@@ -110,6 +110,7 @@ jobs:
           update-comment: true
           pass-emoji: ":white_check_mark:"
           fail-emoji: ":x:"
+          continue-on-error: true
       - name: Fail PR if overall coverage is less than required
         if: ${{ steps.jacoco.outputs.coverage-changed-files < 80.0 }}
         uses: actions/github-script@v6

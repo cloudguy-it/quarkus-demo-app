@@ -33,7 +33,7 @@ jobs:
       - name: Generate JaCoCo badge
         if: ${{ github.event_name != 'pull_request' }}
         id: jacocoBadge
-        uses: cicirello/jacoco-badge-generator@v2
+        uses: cicirello/jacoco-badge-generator@v2.9.0
         with:
           jacoco-csv-file: ./build/reports/jacoco/test/jacocoTestReport.csv
           badges-directory: ${{ github.event.repository.name }}.wiki
