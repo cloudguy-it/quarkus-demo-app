@@ -33,7 +33,7 @@ jobs:
       - name: Generate JaCoCo badge
         if: ${{ github.event_name != 'pull_request' }}
         id: jacocoBadge
-        uses: cicirello/jacoco-badge-generator@v2
+        uses: cicirello/jacoco-badge-generator@v2.9.0
         with:
           jacoco-csv-file: ./build/reports/jacoco/test/jacocoTestReport.csv
           badges-directory: ${{ github.event.repository.name }}.wiki
@@ -52,13 +52,6 @@ jobs:
       - name: Commit and push the coverage badges and summary file
         if: ${{ github.event_name != 'pull_request' }}
         run: |
-          pwd
-          ls -ltr
-          cd ${{ github.workspace }}
-          ls -ltr
-          cd quarkus-demo-app.wiki
-          pwd
-          ls -ltr
           if [[ `git status --porcelain *.svg` ]]; then
             git config --global user.name 'github-actions'
             git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'

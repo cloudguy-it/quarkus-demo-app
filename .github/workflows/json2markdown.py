@@ -31,6 +31,50 @@ def load_html_from_file(filename):
     unittests.append(extracted_result)
     return unittests
 
+def load_vulnerabilities_html(filename):
+    # Parse the HTML content with BeautifulSoup
+    print('starting script')
+    with open(filename) as file:
+        print('Opening file')
+        soup = BeautifulSoup(file, 'html.parser')
+
+    # Find all rows containing vulnerability information
+    rows = soup.find_all('tr', class_=['severity-HIGH', 'severity-CRITICAL'])  # Assuming all vulnerability rows have the class 'severity-HIGH'
+
+    vulnerabilities = []
+    for row in rows:
+        vulnerability_id = row.find('td', string=lambda text: 'CVE-' in text)
+        if vulnerability_id:
+            package = row.find('td', class_='pkg-name').text.strip()
+            severity = row.find('td', class_='severity').text.strip()
+            installed_version = row.find('td', class_='pkg-version').text.strip()
+
+            # Extract the fixed versions as a list from the correct <td> element
+            fixed_versions_list = [version.strip() for version in row.find_all('td')[4].text.split(',')]
+            fixed_version = ', '.join(fixed_versions_list)
+
+            print('fixed version')
+            print(fixed_version)
+
+
+            # Append the vulnerability information to the list
+            vulnerabilities.append({
+                'Vulnerability ID': vulnerability_id.text.strip(),
+                'Package': package,
+                'Installed Version': installed_version,
+                'Fixed Version': fixed_version,
+                'Severity': severity
+            })
+
+    # Print all extracted vulnerabilities
+    if vulnerabilities:
+        for vulnerability in vulnerabilities:
+            print(vulnerability)
+    else:
+        print("No vulnerabilities found in the table.")
+
+    return vulnerabilities
+
 
 def load_json_from_file(filename):
     with open(filename) as file:
@@ -77,8 +121,7 @@ output_file = 'report_' + type + '.md'
 if type == 'UNITTEST':
     json_formatted = load_html_from_file("./build/reports/tests/test/index.html")
 elif type == 'VULNERABILITY':
-    json_data = load_json_from_file("report.json")
-    json_formatted = extract_vulnerabilities(json_data)
+    json_formatted = load_vulnerabilities_html("report.html")
 
 # Convert json data to Markdown table
 markdown = convert_json_to_markdown(json_formatted)

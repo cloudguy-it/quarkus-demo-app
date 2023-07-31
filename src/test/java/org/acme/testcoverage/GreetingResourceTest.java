@@ -43,4 +43,13 @@ public class GreetingResourceTest {
 
         assertEquals(expectedResponse, response);
     }
+
+    @Test
+    public void testByeEndpoint() {
+        String expectedResponse = "bye";
+
+        String response = greetingResource.bye();
+
+        assertEquals(expectedResponse, response);
+    }
 }

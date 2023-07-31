@@ -13,13 +13,10 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
-
-      - name: Run Test and Coverage
-        run: ./gradlew quarkusBuild test jacocoTestReport
-
+      - name: Run build
+        run: ./gradlew clean quarkusBuild
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
@@ -27,7 +24,24 @@ jobs:
           path: .
 
 
-  unittest_scan:
+  test:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 11
+        uses: actions/setup-java@v3
+        with:
+          java-version: '11'
+          distribution: 'temurin'
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Run build
+        run: ./gradlew test
+
+
+
+  unittest_scanner:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -35,6 +49,16 @@ jobs:
         uses: actions/download-artifact@v3
         with:
           name: artifacts
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Run build
+        run: ./gradlew test
+        continue-on-error: true
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: artifacts
+          path: .
       - name: Convert UNITTEST to Markdown
         id: unittestmd
         run: |
@@ -42,27 +66,40 @@ jobs:
           python3 .github/workflows/json2markdown.py UNITTEST
           echo 'UNITTESTMD_OUTPUT<<EOF' >> $GITHUB_OUTPUT
           echo "$(cat report_UNITTEST.md)" >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT          
-
-      - name: Comment PR with UNITTEST results
-        uses: thollander/actions-comment-pull-request@v2
+          echo 'EOF' >> $GITHUB_OUTPUT
+      - name: Find Unittest Comment if exist
+        uses: peter-evans/find-comment@v2
+        id: fc
         with:
-          message: |
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Test Summary Report
+      - name: Create or update Unittest comment
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
             ### Test Summary Report 
             ${{ steps.unittestmd.outputs.UNITTESTMD_OUTPUT }}
+          edit-mode: replace
 
-
-  jacoco_coverage_scan:
-    needs: build
+  jacoco_coverage_scanner:
+    needs: unittest_scanner
     runs-on: ubuntu-latest
     steps:
       - name: Download artifacts
         uses: actions/download-artifact@v3
         with:
           name: artifacts
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+      - name: Run Coverage Test
+        run: ./gradlew jacocoTestReport
+        continue-on-error: true
       - name: Jacoco Report to PR
         id: jacoco
-        uses: madrapps/jacoco-report@v1.4
+        uses: madrapps/jacoco-report@v1.6.1
         with:
           paths: ./build/reports/jacoco/test/jacocoTestReport.xml
           token: ${{ secrets.GITHUB_TOKEN }}
@@ -70,43 +107,18 @@ jobs:
           min-coverage-changed-files: 80
           title: '[Code Coverage Report ${{ github.repository }}](https:///www.google.com)'
           debug-mode: false
-      - name: Upload coverage reports to Codecov
-        uses: codecov/codecov-action@v3
-        env:
-          CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-
-
-      - name: Generate JaCoCo badge
-        if: ${{ github.event_name != 'pull_request' }}
-        id: jacocoBadge
-        uses: cicirello/jacoco-badge-generator@v2
+          update-comment: true
+          pass-emoji: ":white_check_mark:"
+          fail-emoji: ":x:"
+          continue-on-error: true
+      - name: Fail PR if overall coverage is less than required
+        if: ${{ steps.jacoco.outputs.coverage-changed-files < 80.0 }}
+        uses: actions/github-script@v6
         with:
-          jacoco-csv-file: ./build/reports/jacoco/test/jacocoTestReport.csv
-          badges-directory: .github/badges
-          generate-branches-badge: false
-          generate-summary: false
-          colors: '#39C609 #a4a61d #EC2F0B'
-          intervals: 100 80 0
-          on-missing-report: fail
-          fail-if-coverage-less-than: 0
-          fail-if-branches-less-than: 0
-          fail-on-coverage-decrease: false
-          fail-on-branches-decrease: false
+          script: |
+            core.setFailed('Overall coverage is less than 80%! ${{ steps.jacoco.outputs.coverage-changed-files }} ')
 
-      - name: Commit and push the coverage badges and summary file
-        if: ${{ github.event_name != 'pull_request' }}
-        run: |
-          cd .github/badges
-          if [[ `git status --porcelain *.svg` ]]; then
-            git config --global user.name 'github-actions'
-            git config --global user.email '41898282+github-actions[bot]@users.noreply.github.com'
-            git add *.svg
-            git commit -m "Autogenerated JaCoCo coverage badges" *.svg
-            git push
-          fi
- 
-
-  trivy_vulnerabilities_scan:
+  trivy_vulnerabilities_scanner:
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -122,7 +134,6 @@ jobs:
           tar zxvf trivy_0.42.1_Linux-64bit.tar.gz
           ls
           sudo mv trivy /usr/local/bin/
-
       - name: Run Trivy vulnerability scanner
         uses: aquasecurity/trivy-action@master
         with:
@@ -136,20 +147,6 @@ jobs:
           severity: 'CRITICAL,HIGH'
           timeout: '10m0s'
         continue-on-error: true
-
-      - name: Run Trivy vulnerability scanner
-        id: trivyjson
-        uses: aquasecurity/trivy-action@master
-        with:
-          image-ref: '${{ github.repository }}:${{ github.sha }}'
-          format: 'json'
-          output: 'report.json'
-          exit-code: '0'
-          ignore-unfixed: true
-          vuln-type: 'os,library'
-          severity: 'CRITICAL,HIGH'
-        continue-on-error: true
-
       - name: Convert JSON to Markdown
         id: trivymd
         run: |
@@ -157,12 +154,24 @@ jobs:
           python3 .github/workflows/json2markdown.py VULNERABILITY
           echo 'TRIVYMD_OUTPUT<<EOF' >> $GITHUB_OUTPUT
           echo "$(cat report_VULNERABILITY.md)" >> $GITHUB_OUTPUT
-          echo 'EOF' >> $GITHUB_OUTPUT          
-
-      - name: Comment PR
-        uses: thollander/actions-comment-pull-request@v2
+          echo 'EOF' >> $GITHUB_OUTPUT
+      - name: Find trivy Comment if exist
+        uses: peter-evans/find-comment@v2
+        id: fc
         with:
-          message: |
-            ### [Vulnerability report](https://www.google.com/)
+          issue-number: ${{ github.event.pull_request.number }}
+          comment-author: 'github-actions[bot]'
+          body-includes: Trivy Vulnerability report
+      - name: Create or update trivy comment
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ github.event.pull_request.number }}
+          body: |
+            ### [Trivy Vulnerability report](https://www.google.com/)
             
             ${{ steps.trivymd.outputs.TRIVYMD_OUTPUT }}
+          edit-mode: replace
+
+
+
