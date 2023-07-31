@@ -31,11 +31,11 @@ def load_html_from_file(filename):
     unittests.append(extracted_result)
     return unittests
 
-def load_vulnerabilities_html:
+def load_vulnerabilities_html(filename):
 
     # Parse the HTML content with BeautifulSoup
     print('starting script')
-    with open('report.html') as file:
+    with open(filename) as file:
     print('Opening file')
     soup = BeautifulSoup(file, 'html.parser')
 
