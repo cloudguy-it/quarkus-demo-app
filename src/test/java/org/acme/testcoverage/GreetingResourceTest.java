@@ -46,7 +46,7 @@ public class GreetingResourceTest {
 
     @Test
     public void testByeEndpoint() {
-        String expectedResponse = "hello";
+        String expectedResponse = "bye";
 
         String response = greetingResource.bye();
 
