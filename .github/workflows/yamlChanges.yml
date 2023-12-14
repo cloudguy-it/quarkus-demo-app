@@ -21,31 +21,35 @@ jobs:
         sudo apt update
         sudo apt install yq -y
 
-    - name: Compare current and previous modules-configurations
+    - name: Compare current and previous app1 and app2 configurations
       run: |
-        # Extract modules-configurations from the last commit (previous state)
+        # Extract app1 and app2 configurations from the last commit (previous state)
         git checkout HEAD^ -- src/main/resources/api-gateway-updater.yaml
-        yq e '.common-configurations.modules-configurations' src/main/resources/api-gateway-updater.yaml > prev_modules_configs.yaml
-        echo "Previous modules-configurations:"  # Debugging
-        cat prev_modules_configs.yaml  # Debugging
+        yq e '.common-configurations.modules-configurations.app1' src/main/resources/api-gateway-updater.yaml > prev_app1_config.yaml
+        yq e '.common-configurations.modules-configurations.app2' src/main/resources/api-gateway-updater.yaml > prev_app2_config.yaml
+        echo "Previous app1 configuration:"  # Debugging
+        cat prev_app1_config.yaml  # Debugging
+        echo "Previous app2 configuration:"  # Debugging
+        cat prev_app2_config.yaml  # Debugging
 
-        # Extract modules-configurations from the current commit (latest state)
+        # Extract app1 and app2 configurations from the current commit (latest state)
         git checkout HEAD -- src/main/resources/api-gateway-updater.yaml
-        yq e '.common-configurations.modules-configurations' src/main/resources/api-gateway-updater.yaml > current_modules_configs.yaml
-        echo "Current modules-configurations:"  # Debugging
-        cat current_modules_configs.yaml  # Debugging
+        yq e '.common-configurations.modules-configurations.app1' src/main/resources/api-gateway-updater.yaml > current_app1_config.yaml
+        yq e '.common-configurations.modules-configurations.app2' src/main/resources/api-gateway-updater.yaml > current_app2_config.yaml
+        echo "Current app1 configuration:"  # Debugging
+        cat current_app1_config.yaml  # Debugging
+        echo "Current app2 configuration:"  # Debugging
+        cat current_app2_config.yaml  # Debugging
 
         CHANGE_DETECTED=""
-        MODULES=$(yq e '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N)
-        for module in $MODULES; do
-          PREV_MODULE=$(yq e ".common-configurations.modules-configurations.${module}" prev_modules_configs.yaml)
-          CURRENT_MODULE=$(yq e ".common-configurations.modules-configurations.${module}" current_modules_configs.yaml)
-          if [ "$PREV_MODULE" != "$CURRENT_MODULE" ]; then
-            CHANGE_DETECTED+="Change detected in ${module} configurations. "
-          fi
-        done
+        if ! diff prev_app1_config.yaml current_app1_config.yaml > /dev/null; then
+          CHANGE_DETECTED+="Change detected in app1 configurations. "
+        fi
+        if ! diff prev_app2_config.yaml current_app2_config.yaml > /dev/null; then
+          CHANGE_DETECTED+="Change detected in app2 configurations. "
+        fi
         if [ -z "$CHANGE_DETECTED" ]; then
-          echo "Change outside of modules-configurations"
+          echo "Change outside of app1 and app2 configurations"
         else
           echo $CHANGE_DETECTED
         fi
