@@ -9,7 +9,7 @@ common-configurations:
         port-suffix: "029"
         is-secured: True
         api-path-auth-scopes: []
-        api-path-auth-ignored: ['/v1/app1']
+        api-path-auth-ignored: ['/v1/app1', '/v1/app1/api1']
         separated-deployment:
           api-name-suffix: public
           is-secured: True
@@ -18,7 +18,7 @@ common-configurations:
         port-suffix: "030"
         is-secured: True
         api-path-auth-scopes: []
-        api-path-auth-ignored: ['/v1/app2', '/v1/app2/api1', '/v1/app2/api3']
+        api-path-auth-ignored: ['/v1/app2', '/v1/app2/api1']
         separated-deployment:
           api-name-suffix: private
           is-secured: False
