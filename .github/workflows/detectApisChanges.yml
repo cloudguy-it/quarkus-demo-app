@@ -22,6 +22,7 @@ jobs:
       - name: Save base branch app-configurations
         run: |
           yq e '.common-configurations.app-configurations' src/main/resources/api-gateway-updater.yaml > base_app_configs.yaml
+          echo $(yq e '.common-configurations.app-configurations' src/main/resources/api-gateway-updater.yaml)
 
       - name: Checkout PR branch
         uses: actions/checkout@v3
@@ -31,6 +32,7 @@ jobs:
       - name: Save PR branch app-configurations
         run: |
           yq e '.common-configurations.app-configurations' src/main/resources/api-gateway-updater.yaml > pr_app_configs.yaml
+          echo $(yq e '.common-configurations.app-configurations' src/main/resources/api-gateway-updater.yaml)
 
       - name: Compare app-configurations
         run: |
