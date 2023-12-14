@@ -24,20 +24,23 @@ jobs:
     - name: Compare current and previous modules-configurations
       run: |
         # Extract modules-configurations from the last commit (previous state)
-        git checkout HEAD^ src/main/resources/api-gateway-updater.yaml
+        git checkout HEAD^ -- src/main/resources/api-gateway-updater.yaml
         yq e '.common-configurations.modules-configurations' src/main/resources/api-gateway-updater.yaml > prev_modules_configs.yaml
         echo "Previous modules-configurations:"  # Debugging
         cat prev_modules_configs.yaml  # Debugging
 
         # Extract modules-configurations from the current commit (latest state)
-        git checkout HEAD src/main/resources/api-gateway-updater.yaml
+        git checkout HEAD -- src/main/resources/api-gateway-updater.yaml
         yq e '.common-configurations.modules-configurations' src/main/resources/api-gateway-updater.yaml > current_modules_configs.yaml
         echo "Current modules-configurations:"  # Debugging
         cat current_modules_configs.yaml  # Debugging
 
         CHANGE_DETECTED=""
-        for module in $(yq e '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N); do
-          if ! diff <(yq e ".common-configurations.modules-configurations.${module}" prev_modules_configs.yaml) <(yq e ".common-configurations.modules-configurations.${module}" current_modules_configs.yaml) > /dev/null; then
+        MODULES=$(yq e '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N)
+        for module in $MODULES; do
+          PREV_MODULE=$(yq e ".common-configurations.modules-configurations.${module}" prev_modules_configs.yaml)
+          CURRENT_MODULE=$(yq e ".common-configurations.modules-configurations.${module}" current_modules_configs.yaml)
+          if [ "$PREV_MODULE" != "$CURRENT_MODULE" ]; then
             CHANGE_DETECTED+="Change detected in ${module} configurations. "
           fi
         done
