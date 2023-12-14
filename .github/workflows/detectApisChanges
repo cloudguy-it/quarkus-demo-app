@@ -1,0 +1,45 @@
+name: detect-change-in-apis
+on:
+  push:
+    branches: 
+      - main
+
+jobs:
+  check-yaml-changes:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout PR branch
+        uses: actions/checkout@v3
+        with:
+        ref: ${{ github.base_ref }}
+      - name: Install yq
+        run: |
+          sudo add-apt-repository ppa:rmescandon/yq
+          sudo apt update
+          sudo apt install yq -y
+      - name: Save base branch app-configurations
+        run: |
+          yq e '.common-configurations.app-configurations' src/main/resources/api-gateway-updater.yaml > base_app_configs.yaml
+
+      - name: Checkout PR branch
+        uses: actions/checkout@v2
+        with:
+          ref: ${{ github.head_ref }}
+
+      - name: Save PR branch app-configurations
+        run: |
+          yq e '.common-configurations.app-configurations' src/main/resources/api-gateway-updater.yaml > pr_app_configs.yaml
+
+      - name: Compare app-configurations
+        run: |
+          CHANGE_DETECTED=""
+          for app in $(yq e '.common-configurations.app-configurations | keys' src/main/resources/api-gateway-updater.yaml -N); do
+            if ! diff <(yq e ".common-configurations.app-configurations.${app}" base_app_configs.yaml) <(yq e ".common-configurations.app-configurations.${app}" pr_app_configs.yaml) > /dev/null; then
+              CHANGE_DETECTED+="Change detected in ${app} configurations. "
+            fi
+          done
+          if [ -z "$CHANGE_DETECTED" ]; then
+            echo "Change outside of app-configurations"
+          else
+            echo $CHANGE_DETECTED
+          fi
