@@ -1,55 +1,60 @@
-name: Check YAML Changes
+name: Detect Dynamic YAML Changes
 
 on:
   push:
     branches:
-      - main  # Trigger the workflow on push to the main branch. Adjust as necessary.
+      - main  # Adjust as necessary for your branch structure
 
 jobs:
-  check-yaml-changes:
+  dynamic-yaml-change-detection:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
-        fetch-depth: 2  # Fetches the last two commits for comparison
+        fetch-depth: 2  # Necessary to get the previous commit for comparison
 
-    - name: Install yq
+    - name: Install yq (YAML Processor)
       run: |
-        sudo add-apt-repository ppa:rmescandon/yq
-        sudo apt update
-        sudo apt install yq -y
+        sudo snap install yq
 
-    - name: Compare current and previous app1 and app2 configurations
+    - name: Compare dynamic app configurations in YAML
       run: |
-        # Extract app1 and app2 configurations from the last commit (previous state)
+        # Checkout the previous commit for comparison
         git checkout HEAD^ -- src/main/resources/api-gateway-updater.yaml
-        yq e '.common-configurations.modules-configurations.app1' src/main/resources/api-gateway-updater.yaml > prev_app1_config.yaml
-        yq e '.common-configurations.modules-configurations.app2' src/main/resources/api-gateway-updater.yaml > prev_app2_config.yaml
-        echo "Previous app1 configuration:"  # Debugging
-        cat prev_app1_config.yaml  # Debugging
-        echo "Previous app2 configuration:"  # Debugging
-        cat prev_app2_config.yaml  # Debugging
+        # Extract the list of applications from the previous state
+        yq e '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml > apps_list.txt
+        # Save configurations for each app from the previous commit
+        for app in $(cat apps_list.txt); do
+          yq e ".common-configurations.modules-configurations.${app}" src/main/resources/api-gateway-updater.yaml > "prev_${app}_config.yaml"
+        done
 
-        # Extract app1 and app2 configurations from the current commit (latest state)
+        # Checkout the current commit
         git checkout HEAD -- src/main/resources/api-gateway-updater.yaml
-        yq e '.common-configurations.modules-configurations.app1' src/main/resources/api-gateway-updater.yaml > current_app1_config.yaml
-        yq e '.common-configurations.modules-configurations.app2' src/main/resources/api-gateway-updater.yaml > current_app2_config.yaml
-        echo "Current app1 configuration:"  # Debugging
-        cat current_app1_config.yaml  # Debugging
-        echo "Current app2 configuration:"  # Debugging
-        cat current_app2_config.yaml  # Debugging
+        # Save configurations for each app from the current commit
+        for app in $(cat apps_list.txt); do
+          yq e ".common-configurations.modules-configurations.${app}" src/main/resources/api-gateway-updater.yaml > "current_${app}_config.yaml"
+        done
 
+        # Detect changes
         CHANGE_DETECTED=""
-        if ! diff prev_app1_config.yaml current_app1_config.yaml > /dev/null; then
-          CHANGE_DETECTED+="Change detected in app1 configurations. "
-        fi
-        if ! diff prev_app2_config.yaml current_app2_config.yaml > /dev/null; then
-          CHANGE_DETECTED+="Change detected in app2 configurations. "
-        fi
+        for app in $(cat apps_list.txt); do
+          # Debug information
+          echo "Comparing configurations for ${app}:"
+          echo "Previous configuration:"
+          cat "prev_${app}_config.yaml"
+          echo "Current configuration:"
+          cat "current_${app}_config.yaml"
+
+          if ! diff "prev_${app}_config.yaml" "current_${app}_config.yaml" > /dev/null; then
+            CHANGE_DETECTED+="Change detected in ${app} configurations. "
+          fi
+        done
+
+        # Output results
         if [ -z "$CHANGE_DETECTED" ]; then
-          echo "Change outside of app1 and app2 configurations"
+          echo "No changes detected in app configurations."
         else
           echo $CHANGE_DETECTED
         fi
