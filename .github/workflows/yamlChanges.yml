@@ -25,22 +25,22 @@ jobs:
       run: |
         # Extract app-configurations from the last commit (previous state)
         git checkout HEAD^ src/main/resources/api-gateway-updater.yaml
-        yq e '.common-configurations.app-configurations' src/main/resources/api-gateway-updater.yaml > prev_app_configs.yaml
+        yq e '.common-configurations.modules-configurations' src/main/resources/api-gateway-updater.yaml > prev_app_configs.yaml
         cat prev_app_configs.yaml
 
         # Extract app-configurations from the current commit (latest state)
         git checkout HEAD src/main/resources/api-gateway-updater.yaml
-        yq e '.common-configurations.app-configurations' src/main/resources/api-gateway-updater.yaml > current_app_configs.yaml
+        yq e '.common-configurations.modules-configurations' src/main/resources/api-gateway-updater.yaml > current_app_configs.yaml
         cat current_app_configs.yaml
 
         CHANGE_DETECTED=""
-        for app in $(yq e '.common-configurations.app-configurations | keys' src/main/resources/api-gateway-updater.yaml -N); do
-          if ! diff <(yq e ".common-configurations.app-configurations.${app}" prev_app_configs.yaml) <(yq e ".common-configurations.app-configurations.${app}" current_app_configs.yaml) > /dev/null; then
+        for app in $(yq e '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N); do
+          if ! diff <(yq e ".common-configurations.modules-configurations.${app}" prev_app_configs.yaml) <(yq e ".common-configurations.modules-configurations.${app}" current_app_configs.yaml) > /dev/null; then
             CHANGE_DETECTED+="Change detected in ${app} configurations. "
           fi
         done
         if [ -z "$CHANGE_DETECTED" ]; then
-          echo "Change outside of app-configurations"
+          echo "Change outside of modules-configurations"
         else
           echo $CHANGE_DETECTED
         fi
