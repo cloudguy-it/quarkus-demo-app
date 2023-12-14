@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v2
       with:
         fetch-depth: 2  # Fetches the last two commits for comparison
 
@@ -21,22 +21,24 @@ jobs:
         sudo apt update
         sudo apt install yq -y
 
-    - name: Compare current and previous app-configurations
+    - name: Compare current and previous modules-configurations
       run: |
-        # Extract app-configurations from the last commit (previous state)
+        # Extract modules-configurations from the last commit (previous state)
         git checkout HEAD^ src/main/resources/api-gateway-updater.yaml
-        yq e '.common-configurations.modules-configurations' src/main/resources/api-gateway-updater.yaml > prev_app_configs.yaml
-        cat prev_app_configs.yaml
+        yq e '.common-configurations.modules-configurations' src/main/resources/api-gateway-updater.yaml > prev_modules_configs.yaml
+        echo "Previous modules-configurations:"  # Debugging
+        cat prev_modules_configs.yaml  # Debugging
 
-        # Extract app-configurations from the current commit (latest state)
+        # Extract modules-configurations from the current commit (latest state)
         git checkout HEAD src/main/resources/api-gateway-updater.yaml
-        yq e '.common-configurations.modules-configurations' src/main/resources/api-gateway-updater.yaml > current_app_configs.yaml
-        cat current_app_configs.yaml
+        yq e '.common-configurations.modules-configurations' src/main/resources/api-gateway-updater.yaml > current_modules_configs.yaml
+        echo "Current modules-configurations:"  # Debugging
+        cat current_modules_configs.yaml  # Debugging
 
         CHANGE_DETECTED=""
-        for app in $(yq e '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N); do
-          if ! diff <(yq e ".common-configurations.modules-configurations.${app}" prev_app_configs.yaml) <(yq e ".common-configurations.modules-configurations.${app}" current_app_configs.yaml) > /dev/null; then
-            CHANGE_DETECTED+="Change detected in ${app} configurations. "
+        for module in $(yq e '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N); do
+          if ! diff <(yq e ".common-configurations.modules-configurations.${module}" prev_modules_configs.yaml) <(yq e ".common-configurations.modules-configurations.${module}" current_modules_configs.yaml) > /dev/null; then
+            CHANGE_DETECTED+="Change detected in ${module} configurations. "
           fi
         done
         if [ -z "$CHANGE_DETECTED" ]; then
