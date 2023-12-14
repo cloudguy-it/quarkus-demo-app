@@ -13,7 +13,7 @@ jobs:
       - name: Checkout PR branch
         uses: actions/checkout@v3
         with:
-        ref: ${{ github.base_ref }}
+          ref: ${{ github.base_ref }}
       - name: Install yq
         run: |
           sudo add-apt-repository ppa:rmescandon/yq
@@ -24,7 +24,7 @@ jobs:
           yq e '.common-configurations.app-configurations' src/main/resources/api-gateway-updater.yaml > base_app_configs.yaml
 
       - name: Checkout PR branch
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.head_ref }}
 
