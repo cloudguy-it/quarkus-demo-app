@@ -10,10 +10,11 @@ jobs:
   check-yaml-changes:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout PR branch
+      - name: Checkout base branch
         uses: actions/checkout@v3
         with:
           ref: ${{ github.base_ref }}
+          fetch-depth: 0
       - name: Install yq
         run: |
           sudo add-apt-repository ppa:rmescandon/yq
@@ -42,10 +43,12 @@ jobs:
             echo "Base file found"
           else
             echo "Base file not found"
+          fi
           if [ -f pr_app_configs.yaml ] ; then
             echo "PR file found"
           else
             echo "PR file not found"
+          fi
           CHANGE_DETECTED=""
           for modules in $(yq e '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N); do
             if ! diff <(yq e ".common-configurations.modules-configurations.${modules}" base_app_configs.yaml) <(yq e ".common-configurations.app-configurations.${modules}" pr_app_configs.yaml) > /dev/null; then
