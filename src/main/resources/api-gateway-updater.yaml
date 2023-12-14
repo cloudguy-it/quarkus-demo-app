@@ -20,9 +20,9 @@ common-configurations:
         api-path-auth-scopes: []
         api-path-auth-ignored: ['/v1/app2']
         separated-deployment:
-          api-name-suffix: public
+          api-name-suffix: private
           is-secured: False
           api-path-auth-scopes: []
 env-configuration:
   env1:
-    env-alias: env2
+    env-alias: env3
