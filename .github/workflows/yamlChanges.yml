@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 2  # Fetches the last two commits for comparison
 
@@ -24,17 +24,17 @@ jobs:
     - name: Compare current and previous app-configurations
       run: |
         # Extract app-configurations from the last commit (previous state)
-        git checkout HEAD^ src/configs/api-gateway-updater
-        yq e '.common-configurations.app-configurations' src/configs/api-gateway-updater > prev_app_configs.yaml
+        git checkout HEAD^ src/main/resources/api-gateway-updater.yaml
+        yq e '.common-configurations.app-configurations' src/main/resources/api-gateway-updater.yaml > prev_app_configs.yaml
         cat prev_app_configs.yaml
 
         # Extract app-configurations from the current commit (latest state)
-        git checkout HEAD src/configs/api-gateway-updater
-        yq e '.common-configurations.app-configurations' src/configs/api-gateway-updater > current_app_configs.yaml
+        git checkout HEAD src/main/resources/api-gateway-updater.yaml
+        yq e '.common-configurations.app-configurations' src/main/resources/api-gateway-updater.yaml > current_app_configs.yaml
         cat current_app_configs.yaml
 
         CHANGE_DETECTED=""
-        for app in $(yq e '.common-configurations.app-configurations | keys' src/configs/api-gateway-updater -N); do
+        for app in $(yq e '.common-configurations.app-configurations | keys' src/main/resources/api-gateway-updater.yaml -N); do
           if ! diff <(yq e ".common-configurations.app-configurations.${app}" prev_app_configs.yaml) <(yq e ".common-configurations.app-configurations.${app}" current_app_configs.yaml) > /dev/null; then
             CHANGE_DETECTED+="Change detected in ${app} configurations. "
           fi
