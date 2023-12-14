@@ -25,4 +25,4 @@ common-configurations:
           api-path-auth-scopes: []
 env-configuration:
   env1:
-    env-alias: env2
+    env-alias: env1
