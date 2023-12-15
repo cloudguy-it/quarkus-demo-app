@@ -25,18 +25,26 @@ jobs:
         git checkout HEAD^ -- src/main/resources/api-gateway-updater.yaml
         echo "Extracting common-configurations section from the previous commit..."
         yq e '.common-configurations' src/main/resources/api-gateway-updater.yaml > prev_common_configs.yaml
+        yq e 'del(.modules-configurations)' prev_common_configs.yaml > prev_common_configs.yaml
         echo "Previous common-configurations:"
         cat prev_common_configs.yaml
+        yq e '.modules-configurations' src/main/resources/api-gateway-updater.yaml > prev_modules_configs.yaml
+        echo "Previous modules-configurations:"
+        cat prev_modules_configs.yaml
 
         echo "Checking out the current commit..."
         git checkout HEAD -- src/main/resources/api-gateway-updater.yaml
         echo "Extracting common-configurations section from the current commit..."
         yq e '.common-configurations' src/main/resources/api-gateway-updater.yaml > current_common_configs.yaml
+        yq e 'del(.modules-configurations)' current_common_configs.yaml > prev_common_configs.yaml
         echo "Current common-configurations:"
         cat current_common_configs.yaml
+        yq e '.modules-configurations' src/main/resources/api-gateway-updater.yaml > current_modules_configs.yaml
+        echo "Current modules-configurations:"
+        cat current_modules_configs.yaml
 
         echo "Comparing for changes in common-configurations outside modules-configurations..."
-        if ! diff <(yq e 'del(.modules-configurations)' prev_common_configs.yaml) <(yq e 'del(.modules-configurations)' current_common_configs.yaml) > /dev/null; then
+        if ! diff <(yq e 'del(.modules-configurations)' prev_common_configs.yaml) <(yq e 'del(.modules-configurations)' current_common_configs.yaml); then
           echo "Difference detected in global modules. Modules available:"
           MODULES=$(yq e '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N)
           echo $MODULES
@@ -45,13 +53,13 @@ jobs:
           MODULES=$(yq e '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N)
           for module in $MODULES; do
             echo "Checking changes in module: $module"
-            PREV_MODULE_CONFIG=$(yq e ".common-configurations.modules-configurations.${module}" prev_common_configs.yaml)
-            CURRENT_MODULE_CONFIG=$(yq e ".common-configurations.modules-configurations.${module}" current_common_configs.yaml)
+            PREV_MODULE_CONFIG=$(yq e ".common-configurations.modules-configurations.${module}" prev_module_configs.yaml)
+            CURRENT_MODULE_CONFIG=$(yq e ".common-configurations.modules-configurations.${module}" current_module_configs.yaml)
             echo "Previous configuration for ${module}:"
             echo "$PREV_MODULE_CONFIG"
             echo "Current configuration for ${module}:"
             echo "$CURRENT_MODULE_CONFIG"
-            if ! diff <(echo "$PREV_MODULE_CONFIG") <(echo "$CURRENT_MODULE_CONFIG") > /dev/null; then
+            if ! diff <(echo "$PREV_MODULE_CONFIG") <(echo "$CURRENT_MODULE_CONFIG"); then
               echo "A change happens in module ${module}"
             else
               echo "No change detected in module ${module}"
