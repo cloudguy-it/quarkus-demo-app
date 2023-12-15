@@ -44,7 +44,7 @@ jobs:
         cat current_modules_configs.yaml
 
         echo "Comparing for changes in common-configurations outside modules-configurations..."
-        if ! diff <(yq e 'del(.modules-configurations)' prev_common_configs.yaml) <(yq e 'del(.modules-configurations)' current_common_configs.yaml); then
+        if ! diff prev_common_configs.yaml current_common_configs.yaml; then
           echo "Difference detected in global modules. Modules available:"
           MODULES=$(yq e '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N)
           echo $MODULES
@@ -53,8 +53,8 @@ jobs:
           MODULES=$(yq e '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N)
           for module in $MODULES; do
             echo "Checking changes in module: $module"
-            PREV_MODULE_CONFIG=$(yq e ".common-configurations.modules-configurations.${module}" prev_module_configs.yaml)
-            CURRENT_MODULE_CONFIG=$(yq e ".common-configurations.modules-configurations.${module}" current_module_configs.yaml)
+            PREV_MODULE_CONFIG=$(yq e ".common-configurations.modules-configurations.${module}" prev_modules_configs.yaml)
+            CURRENT_MODULE_CONFIG=$(yq e ".common-configurations.modules-configurations.${module}" current_modules_configs.yaml)
             echo "Previous configuration for ${module}:"
             echo "$PREV_MODULE_CONFIG"
             echo "Current configuration for ${module}:"
