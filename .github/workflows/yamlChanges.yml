@@ -54,8 +54,8 @@ jobs:
           MODULES=$(yq '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N)
           echo $MODULES
           for module in $MODULES; do
-            echo .${module}
-            if ".${module}" != '-'; then
+            echo ".${module}"
+            if ".${module}" != ".-"; then
               echo "Checking changes in module: $module"
               PREV_MODULE_CONFIG=$(yq ".${module}" prev_modules_configs.yaml)
               CURRENT_MODULE_CONFIG=$(yq ".${module}" current_modules_configs.yaml)
