@@ -1,6 +1,6 @@
 common-configurations:
   api-gateway:
-    api-definitions-path: terraform-scripts/definition/swagger.yaml
+    api-definitions-path: terraform-scripts/definition/swagger1.yaml
     connection-type: VPC_LINK1
     http-type: http_proxy
     authorizer-name: Authorization
@@ -12,7 +12,7 @@ common-configurations:
         api-path-auth-ignored: ['/v1/app1', '/v1/app1/api3']
         separated-deployment:
           api-name-suffix: private
-          is-secured: False
+          is-secured: True
           api-path-auth-scopes: []
       app2:
         port-suffix: "030"
@@ -25,4 +25,4 @@ common-configurations:
           api-path-auth-scopes: []
 env-configuration:
   env1:
-    env-alias: env3
+    env-alias: env1
