@@ -11,14 +11,14 @@ common-configurations:
         api-path-auth-scopes: []
         api-path-auth-ignored: ['/v1/app1', '/v1/app1/api3']
         separated-deployment:
-          api-name-suffix: private
+          api-name-suffix: public
           is-secured: True
           api-path-auth-scopes: []
       app2:
         port-suffix: "030"
         is-secured: True
         api-path-auth-scopes: []
-        api-path-auth-ignored: ['/v1/app2', '/v1/app2/api1']
+        api-path-auth-ignored: ['/v1/app2', '/v1/app2/api2']
         separated-deployment:
           api-name-suffix: private
           is-secured: False
