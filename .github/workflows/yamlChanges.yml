@@ -54,8 +54,8 @@ jobs:
           MODULES=$(yq '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N)
           for module in $MODULES; do
             echo "Checking changes in module: $module"
-            PREV_MODULE_CONFIG=$(yq ".common-configurations.modules-configurations.${module}" prev_modules_configs.yaml)
-            CURRENT_MODULE_CONFIG=$(yq ".common-configurations.modules-configurations.${module}" current_modules_configs.yaml)
+            PREV_MODULE_CONFIG=$(yq ".${module}" prev_modules_configs.yaml)
+            CURRENT_MODULE_CONFIG=$(yq ".${module}" current_modules_configs.yaml)
             echo "Previous configuration for ${module}:"
             echo "$PREV_MODULE_CONFIG"
             echo "Current configuration for ${module}:"
