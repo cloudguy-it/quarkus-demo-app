@@ -55,7 +55,7 @@ jobs:
           echo $MODULES
           for module in $MODULES; do
             echo .${module}
-            if .${module} != '-'; then
+            if ".${module}" != '-'; then
               echo "Checking changes in module: $module"
               PREV_MODULE_CONFIG=$(yq ".${module}" prev_modules_configs.yaml)
               CURRENT_MODULE_CONFIG=$(yq ".${module}" current_modules_configs.yaml)
