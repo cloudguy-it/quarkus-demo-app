@@ -25,26 +25,22 @@ jobs:
         git checkout HEAD^ -- src/main/resources/api-gateway-updater.yaml
         cat src/main/resources/api-gateway-updater.yaml
         echo "Extracting common-configurations section from the previous commit..."
-        yq '.' src/main/resources/api-gateway-updater.yaml > prev_common_configs.yaml
-        cat prev_common_configs.yaml
-        yq 'del(.common-configurations.modules-configurations)' prev_common_configs.yaml > prev_common_configs.yaml
+        yq 'del(.common-configurations.modules-configurations)' src/main/resources/api-gateway-updater.yaml > prev_common_configs.yaml
         echo "Previous common-configurations:"
         cat prev_common_configs.yaml
         echo "Extracting modules-configurations section from the previous commit..."
-        yq '.modules-configurations' src/main/resources/api-gateway-updater.yaml > prev_modules_configs.yaml
+        yq '.common-configurations.modules-configurations' src/main/resources/api-gateway-updater.yaml > prev_modules_configs.yaml
         echo "Previous modules-configurations:"
         cat prev_modules_configs.yaml
 
         echo "Checking out the current commit..."
         git checkout HEAD -- src/main/resources/api-gateway-updater.yaml
         echo "Extracting common-configurations section from the current commit..."
-        yq '.' src/main/resources/api-gateway-updater.yaml > current_common_configs.yaml
-        cat current_common_configs.yaml
-        yq 'del(.common-configurations.modules-configurations)' current_common_configs.yaml > prev_common_configs.yaml
+        yq 'del(.common-configurations.modules-configurations)' src/main/resources/api-gateway-updater.yaml > current_common_configs.yaml
         echo "Current common-configurations:"
         cat current_common_configs.yaml
         echo "Extracting modules-configurations section from the previous commit..."
-        yq '.modules-configurations' src/main/resources/api-gateway-updater.yaml > current_modules_configs.yaml
+        yq '.common-configurations.modules-configurations' src/main/resources/api-gateway-updater.yaml > current_modules_configs.yaml
         echo "Current modules-configurations:"
         cat current_modules_configs.yaml
 
