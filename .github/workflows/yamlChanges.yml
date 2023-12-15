@@ -51,7 +51,7 @@ jobs:
           echo $MODULES
         else
           echo "No global changes detected. Checking for changes within each module in modules-configurations..."
-          MODULES=$(yq '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N)
+          MODULES=$(yq '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N | tr -d '\n')
           echo $MODULES
           for module in $MODULES; do
             echo ".${module}"
