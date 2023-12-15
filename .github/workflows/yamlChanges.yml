@@ -11,7 +11,7 @@ jobs:
 
     steps:
     - name: Checkout repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       with:
         fetch-depth: 2  # Necessary to get the previous commit for comparison
 
@@ -23,38 +23,43 @@ jobs:
       run: |
         echo "Checking out the previous commit..."
         git checkout HEAD^ -- src/main/resources/api-gateway-updater.yaml
+        cat src/main/resources/api-gateway-updater.yaml
         echo "Extracting common-configurations section from the previous commit..."
-        yq e '.common-configurations' src/main/resources/api-gateway-updater.yaml > prev_common_configs.yaml
-        yq e 'del(.modules-configurations)' prev_common_configs.yaml > prev_common_configs.yaml
+        yq '.common-configurations' src/main/resources/api-gateway-updater.yaml > prev_common_configs.yaml
+        cat prev_common_configs.yaml
+        yq 'del(.modules-configurations)' prev_common_configs.yaml > prev_common_configs.yaml
         echo "Previous common-configurations:"
         cat prev_common_configs.yaml
-        yq e '.modules-configurations' src/main/resources/api-gateway-updater.yaml > prev_modules_configs.yaml
+        echo "Extracting modules-configurations section from the previous commit..."
+        yq '.modules-configurations' src/main/resources/api-gateway-updater.yaml > prev_modules_configs.yaml
         echo "Previous modules-configurations:"
         cat prev_modules_configs.yaml
 
         echo "Checking out the current commit..."
         git checkout HEAD -- src/main/resources/api-gateway-updater.yaml
         echo "Extracting common-configurations section from the current commit..."
-        yq e '.common-configurations' src/main/resources/api-gateway-updater.yaml > current_common_configs.yaml
-        yq e 'del(.modules-configurations)' current_common_configs.yaml > prev_common_configs.yaml
+        yq '.common-configurations' src/main/resources/api-gateway-updater.yaml > current_common_configs.yaml
+        cat current_common_configs.yaml
+        yq 'del(.modules-configurations)' current_common_configs.yaml > prev_common_configs.yaml
         echo "Current common-configurations:"
         cat current_common_configs.yaml
-        yq e '.modules-configurations' src/main/resources/api-gateway-updater.yaml > current_modules_configs.yaml
+        echo "Extracting modules-configurations section from the previous commit..."
+        yq '.modules-configurations' src/main/resources/api-gateway-updater.yaml > current_modules_configs.yaml
         echo "Current modules-configurations:"
         cat current_modules_configs.yaml
 
         echo "Comparing for changes in common-configurations outside modules-configurations..."
         if ! diff prev_common_configs.yaml current_common_configs.yaml; then
           echo "Difference detected in global modules. Modules available:"
-          MODULES=$(yq e '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N)
+          MODULES=$(yq '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N)
           echo $MODULES
         else
           echo "No global changes detected. Checking for changes within each module in modules-configurations..."
-          MODULES=$(yq e '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N)
+          MODULES=$(yq '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N)
           for module in $MODULES; do
             echo "Checking changes in module: $module"
-            PREV_MODULE_CONFIG=$(yq e ".common-configurations.modules-configurations.${module}" prev_modules_configs.yaml)
-            CURRENT_MODULE_CONFIG=$(yq e ".common-configurations.modules-configurations.${module}" current_modules_configs.yaml)
+            PREV_MODULE_CONFIG=$(yq ".common-configurations.modules-configurations.${module}" prev_modules_configs.yaml)
+            CURRENT_MODULE_CONFIG=$(yq ".common-configurations.modules-configurations.${module}" current_modules_configs.yaml)
             echo "Previous configuration for ${module}:"
             echo "$PREV_MODULE_CONFIG"
             echo "Current configuration for ${module}:"
