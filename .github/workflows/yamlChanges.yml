@@ -62,8 +62,12 @@ jobs:
             echo "$CURRENT_MODULE_CONFIG"
             if ! diff <(echo "$PREV_MODULE_CONFIG") <(echo "$CURRENT_MODULE_CONFIG"); then
               echo "A change happens in module ${module}"
+              CHANGED_MODULES="${CHANGED_MODULES}${module},"
             else
               echo "No change detected in module ${module}"
             fi
           done
+          # Remove the trailing comma
+          CHANGED_MODULES="${CHANGED_MODULES%,}"
+          echo "Changed Modules: $CHANGED_MODULES"
         fi
