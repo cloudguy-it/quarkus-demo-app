@@ -1,4 +1,4 @@
-name: Detect Dynamic YAML Changes
+name: Detect YAML Changes with Specific Rules
 
 on:
   push:
@@ -6,7 +6,7 @@ on:
       - main  # Adjust as necessary for your branch structure
 
 jobs:
-  dynamic-yaml-change-detection:
+  yaml-change-detection:
     runs-on: ubuntu-latest
 
     steps:
@@ -19,42 +19,32 @@ jobs:
       run: |
         sudo snap install yq
 
-    - name: Compare dynamic app configurations in YAML
+    - name: Analyze YAML changes
       run: |
         # Checkout the previous commit for comparison
         git checkout HEAD^ -- src/main/resources/api-gateway-updater.yaml
-        # Extract the list of applications from the previous state
-        yq e '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml > apps_list.txt
-        # Save configurations for each app from the previous commit
-        for app in $(cat apps_list.txt); do
-          yq e ".common-configurations.modules-configurations.${app}" src/main/resources/api-gateway-updater.yaml > "prev_${app}_config.yaml"
-        done
+        # Save entire YAML file from the previous commit
+        yq e '.' src/main/resources/api-gateway-updater.yaml > prev_full_yaml.yaml
+        # Save modules-configurations section from the previous commit
+        yq e '.common-configurations.modules-configurations' src/main/resources/api-gateway-updater.yaml > prev_modules_configs.yaml
 
         # Checkout the current commit
         git checkout HEAD -- src/main/resources/api-gateway-updater.yaml
-        # Save configurations for each app from the current commit
-        for app in $(cat apps_list.txt); do
-          yq e ".common-configurations.modules-configurations.${app}" src/main/resources/api-gateway-updater.yaml > "current_${app}_config.yaml"
-        done
+        # Save entire YAML file from the current commit
+        yq e '.' src/main/resources/api-gateway-updater.yaml > current_full_yaml.yaml
+        # Save modules-configurations section from the current commit
+        yq e '.common-configurations.modules-configurations' src/main/resources/api-gateway-updater.yaml > current_modules_configs.yaml
 
-        # Detect changes
-        CHANGE_DETECTED=""
-        for app in $(cat apps_list.txt); do
-          # Debug information
-          echo "Comparing configurations for ${app}:"
-          echo "Previous configuration:"
-          cat "prev_${app}_config.yaml"
-          echo "Current configuration:"
-          cat "current_${app}_config.yaml"
-
-          if ! diff "prev_${app}_config.yaml" "current_${app}_config.yaml" > /dev/null; then
-            CHANGE_DETECTED+="Change detected in ${app} configurations. "
-          fi
-        done
-
-        # Output results
-        if [ -z "$CHANGE_DETECTED" ]; then
-          echo "No changes detected in app configurations."
+        # Check for global changes outside modules-configurations
+        if ! diff prev_modules_configs.yaml current_modules_configs.yaml > /dev/null; then
+          echo "A change was performed in global modules. Modules available:"
+          yq e '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml
         else
-          echo $CHANGE_DETECTED
+          # Check for changes within each module in modules-configurations
+          MODULES=$(yq e '.common-configurations.modules-configurations | keys' src/main/resources/api-gateway-updater.yaml -N)
+          for module in $MODULES; do
+            if ! diff <(yq e ".common-configurations.modules-configurations.${module}" prev_full_yaml.yaml) <(yq e ".common-configurations.modules-configurations.${module}" current_full_yaml.yaml) > /dev/null; then
+              echo "A change happens in module ${module}"
+            fi
+          done
         fi
