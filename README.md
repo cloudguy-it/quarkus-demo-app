@@ -6,7 +6,7 @@ This codebase was created to demonstrate a fully fledged fullstack application b
 
 # How it works
 
-This application basicaly uses Quarkus Framework with Java 8 with some other modules known to development community:
+This application basicaly uses Qua1rkus Framework with Java 8 with some other modules known to development community:
 
 * Hibernate 5
 * Jackson for JSON
